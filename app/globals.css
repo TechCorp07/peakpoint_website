@@ -1,0 +1,410 @@
+@import "tailwindcss";
+/* Removed tw-animate-css import that was causing syntax error with Tailwind v4 */
+
+@custom-variant dark (&:is(.dark *));
+
+/* Lighter theme with gradients like Microsoft and Nokia */
+:root {
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --popover: 255 255 255;
+  --popover-foreground: 15 23 42;
+  --primary: 1 0 40;
+  --primary-foreground: 255 255 255;
+  --secondary: 241 245 249;
+  --secondary-foreground: 15 23 42;
+  --muted: 248 250 252;
+  --muted-foreground: 100 116 139;
+  /* Added accent variants for green colors */
+  --accent: 27 238 101;
+  --accent-hover: 20 242 69;
+  --accent-alt: 32 237 123;
+  --accent-foreground: 255 255 255;
+  --destructive: 239 68 68;
+  --destructive-foreground: 255 255 255;
+  --border: 226 232 240;
+  --input: 226 232 240;
+  --ring: 27 238 101;
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: 15 23 42;
+  --foreground: 248 250 252;
+  --card: 30 41 59;
+  --card-foreground: 248 250 252;
+  --popover: 30 41 59;
+  --popover-foreground: 248 250 252;
+  --primary: 248 250 252;
+  --primary-foreground: 15 23 42;
+  --secondary: 51 65 85;
+  --secondary-foreground: 248 250 252;
+  --muted: 51 65 85;
+  --muted-foreground: 148 163 184;
+  --accent: 27 238 101;
+  --accent-hover: 20 242 69;
+  --accent-alt: 32 237 123;
+  --accent-foreground: 15 23 42;
+  --destructive: 220 38 38;
+  --destructive-foreground: 248 250 252;
+  --border: 51 65 85;
+  --input: 51 65 85;
+  --ring: 27 238 101;
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-accent: rgb(var(--accent));
+  /* Added accent variant colors to theme */
+  --color-accent-hover: rgb(var(--accent-hover));
+  --color-accent-alt: rgb(var(--accent-alt));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-gradient-to-br from-white via-blue-50/30 to-green-50/20 text-foreground;
+  }
+}
+
+/* Adding gradient utilities for Microsoft/Nokia style */
+@layer utilities {
+  .gradient-mesh {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(20, 237, 123, 0.05) 100%);
+  }
+  .gradient-hero {
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0.9),
+      rgba(59, 130, 246, 0.1),
+      rgba(20, 237, 123, 0.1)
+    );
+  }
+  .animate-in {
+    animation-name: enter;
+    animation-duration: 150ms;
+  }
+  .animate-out {
+    animation-name: exit;
+    animation-duration: 150ms;
+  }
+  .fade-in {
+    animation-name: fadeIn;
+  }
+  .fade-out {
+    animation-name: fadeOut;
+  }
+  .fade-out-80 {
+    animation-name: fadeOut80;
+  }
+  .slide-in-from-top {
+    animation-name: slideInFromTop;
+  }
+  .slide-in-from-bottom {
+    animation-name: slideInFromBottom;
+  }
+  .slide-in-from-left {
+    animation-name: slideInFromLeft;
+  }
+  .slide-in-from-right {
+    animation-name: slideInFromRight;
+  }
+  .slide-in-from-top-full {
+    animation-name: slideInFromTopFull;
+  }
+  .slide-in-from-bottom-full {
+    animation-name: slideInFromBottomFull;
+  }
+  .slide-in-from-left-52 {
+    animation-name: slideInFromLeft52;
+  }
+  .slide-in-from-right-52 {
+    animation-name: slideInFromRight52;
+  }
+  .slide-out-to-top {
+    animation-name: slideOutToTop;
+  }
+  .slide-out-to-bottom {
+    animation-name: slideOutToBottom;
+  }
+  .slide-out-to-left {
+    animation-name: slideOutToLeft;
+  }
+  .slide-out-to-right {
+    animation-name: slideOutToRight;
+  }
+  .slide-out-to-right-full {
+    animation-name: slideOutToRightFull;
+  }
+  .slide-out-to-left-52 {
+    animation-name: slideOutToLeft52;
+  }
+  .slide-out-to-right-52 {
+    animation-name: slideOutToRight52;
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  .animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out;
+  }
+  .animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out;
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeOut80 {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideInFromTopFull {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideInFromBottomFull {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideInFromLeft52 {
+  from {
+    transform: translateX(-13rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideInFromRight52 {
+  from {
+    transform: translateX(13rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideOutToTop {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes slideOutToBottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes slideOutToRightFull {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes slideOutToLeft52 {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-13rem);
+  }
+}
+@keyframes slideOutToRight52 {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(13rem);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
