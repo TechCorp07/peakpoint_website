@@ -73,8 +73,23 @@ class StrapiClient {
 
   // Sub-Service Pages
   async getSubService(slug: string) {
-    return this.fetch<StrapiResponse<any>>(`/sub-services?filters[slug][$eq]=${slug}&populate=*`)
+    const res = await this.fetch<StrapiResponse<any[]>>(
+      `/sub-services?filters[slug][$eq]=${slug}&populate=*`
+    )
+
+    if (!res || !Array.isArray(res.data)) {
+      console.warn("Unexpected sub-service response from Strapi:", res)
+      return null
+    }
+
+    if (res.data.length === 0) {
+      console.warn(`Sub-service not found for slug: ${slug}`)
+      return null
+    }
+
+    return res.data[0]
   }
+
 
   // Industries
   async getIndustries() {
@@ -203,7 +218,13 @@ class StrapiClient {
 
   // Case Studies
   async getCaseStudies() {
-    return this.fetch<StrapiResponse<any[]>>("/case-studies?populate=*")
+    const res = await this.fetch<StrapiResponse<any[]>>("/case-studies?populate=*")
+    if (!res || !Array.isArray(res.data)) {
+      console.warn("Unexpected case studies response from Strapi:", res)
+      return null
+    }
+
+    return res.data
   }
 
   async getCaseStudy(slug: string) {

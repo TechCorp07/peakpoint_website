@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { neon } from "@neondatabase/serverless"
 
 function getSqlClient() {
-  const connectionString = process.env.NEON_NEON_DATABASE_URL || process.env.NEON_NEON_DATABASE_URL
+  const connectionString = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL
 
   if (!connectionString) {
     throw new Error("Database connection string not configured")

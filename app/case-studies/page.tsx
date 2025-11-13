@@ -8,9 +8,14 @@ import Image from "next/image"
 async function getCaseStudies() {
   try {
     const data = await strapi.getCaseStudies()
+    if (!Array.isArray(data)) {
+      console.warn("getCaseStudies() did not return an array:", data)
+      return null
+    }
+
     return data
   } catch (error) {
-    console.warn("Failed to fetch case studies, using fallback")
+    console.warn("Failed to fetch case studies, using fallback", error)
     return null
   }
 }
@@ -69,7 +74,7 @@ export default async function CaseStudiesPage() {
     },
   ]
 
-  const isStrapiDown = caseStudiesData === null
+  const isStrapiDown = !Array.isArray(caseStudiesData)
   const caseStudies = isStrapiDown ? defaultCaseStudies : caseStudiesData
 
   return (
