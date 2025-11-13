@@ -31,23 +31,23 @@ class StrapiClient {
       const response = await fetch(url, {
         ...options,
         headers,
-        cache: "no-store",
+        next: { revalidate: 300 },
       })
 
       if (!response.ok) {
-        console.warn(`[v0] Strapi API error: ${response.status} ${response.statusText} for ${endpoint}`)
+        console.warn(`Strapi API error: ${response.status} ${response.statusText} for ${endpoint}`)
         return null
       }
 
       const contentType = response.headers.get("content-type")
       if (!contentType || !contentType.includes("application/json")) {
-        console.warn(`[v0] Strapi returned non-JSON response for ${endpoint}. Is Strapi running?`)
+        console.warn(`Strapi returned non-JSON response for ${endpoint}. Is Strapi running?`)
         return null
       }
 
       return response.json()
     } catch (error) {
-      console.warn(`[v0] Failed to fetch from Strapi (${endpoint}):`, error instanceof Error ? error.message : error)
+      console.warn(`Failed to fetch from Strapi (${endpoint}):`, error instanceof Error ? error.message : error)
       return null
     }
   }

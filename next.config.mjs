@@ -5,7 +5,14 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.peakpoint.africa',
+      },
+    ],
   },
+  output: 'standalone',
 }
 
 export default nextConfig

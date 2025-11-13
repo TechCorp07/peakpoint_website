@@ -40,7 +40,7 @@ export default function ContactPage() {
           setSiteSettings(data)
         }
       } catch (error) {
-        console.error("[v0] Failed to fetch site settings:", error)
+        console.error("Failed to fetch site settings:", error)
       }
     }
     fetchSettings()
@@ -75,7 +75,7 @@ export default function ContactPage() {
         setSubmitStatus("error")
       }
     } catch (error) {
-      console.error("[v0] Form submission error:", error)
+      console.error("Form submission error:", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)

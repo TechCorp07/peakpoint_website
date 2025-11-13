@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const data = await strapi.getInsights(type)
     return NextResponse.json(data)
   } catch (error) {
-    console.error("[v0] Error fetching insights:", error)
+    console.error("Error fetching insights:", error)
     return NextResponse.json({ data: [] }, { status: 200 })
   }
 }

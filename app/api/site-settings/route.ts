@@ -21,7 +21,7 @@ export async function GET() {
 
     return NextResponse.json(response.data)
   } catch (error) {
-    console.error("[v0] Site settings API error:", error)
+    console.error("Site settings API error:", error)
     return NextResponse.json(
       {
         contactEmail: "info@peakpoint.africa",

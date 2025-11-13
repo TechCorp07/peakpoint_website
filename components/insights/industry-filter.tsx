@@ -31,7 +31,7 @@ export function IndustryFilter({ onFilterChange, activeFilter, availableIndustri
   }, [availableIndustries])
 
   const handleClick = (industryId: string) => {
-    console.log("[v0] Filter clicked:", industryId)
+    console.log("Filter clicked:", industryId)
     onFilterChange(industryId)
   }
 

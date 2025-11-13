@@ -78,7 +78,7 @@ export function ChatInterface({ onClose }: ChatInterfaceProps) {
 
       setMessages((prev) => [...prev, assistantMessage])
     } catch (error) {
-      console.error("[v0] Chat error:", error)
+      console.error("Chat error:", error)
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",

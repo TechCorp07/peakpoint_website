@@ -55,10 +55,10 @@ export default function NewsPage() {
         const industries = Array.from(
           new Set(displayNews.map((item: any) => item.attributes.industry).filter(Boolean)),
         ) as string[]
-        console.log("[v0] Available industries:", industries)
+        console.log("Available industries:", industries)
         setAvailableIndustries(industries)
       } catch (error) {
-        console.error("[v0] Error fetching news:", error)
+        console.error("Error fetching news:", error)
       } finally {
         setLoading(false)
       }
@@ -68,19 +68,19 @@ export default function NewsPage() {
   }, [])
 
   const handleFilterChange = (industry: string) => {
-    console.log("[v0] Filter changed to:", industry)
+    console.log("Filter changed to:", industry)
     setActiveFilter(industry)
 
     if (industry === "all") {
-      console.log("[v0] Showing all news:", news.length)
+      console.log("Showing all news:", news.length)
       setFilteredNews(news)
     } else {
       const filtered = news.filter((item: any) => {
         const itemIndustry = item.attributes.industry?.toLowerCase()
-        console.log("[v0] Comparing:", itemIndustry, "with", industry)
+        console.log("Comparing:", itemIndustry, "with", industry)
         return itemIndustry === industry.toLowerCase()
       })
-      console.log("[v0] Filtered news:", filtered.length)
+      console.log("Filtered news:", filtered.length)
       setFilteredNews(filtered)
     }
   }

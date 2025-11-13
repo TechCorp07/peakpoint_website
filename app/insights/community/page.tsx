@@ -55,7 +55,7 @@ export default function CommunityPage() {
         ) as string[]
         setAvailableIndustries(industries)
       } catch (error) {
-        console.error("[v0] Error fetching community posts:", error)
+        console.error("Error fetching community posts:", error)
       } finally {
         setLoading(false)
       }
@@ -65,7 +65,7 @@ export default function CommunityPage() {
   }, [])
 
   const handleFilterChange = (industry: string) => {
-    console.log("[v0] Filter changed to:", industry)
+    console.log("Filter changed to:", industry)
     setActiveFilter(industry)
 
     if (industry === "all") {

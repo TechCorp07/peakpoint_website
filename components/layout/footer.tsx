@@ -10,7 +10,7 @@ async function getFooterData() {
     }
     return data.data
   } catch (error) {
-    console.warn("[v0] Footer: Using fallback data, Strapi not available")
+    console.warn("Footer: Using fallback data, Strapi not available")
     return null
   }
 }
@@ -23,7 +23,7 @@ async function getFooterNavigation() {
     }
     return data.data
   } catch (error) {
-    console.warn("[v0] Footer Navigation: Using fallback data, Strapi not available")
+    console.warn("Footer Navigation: Using fallback data, Strapi not available")
     return null
   }
 }
@@ -36,7 +36,7 @@ async function getSiteSettings() {
     }
     return data.data
   } catch (error) {
-    console.warn("[v0] Site Settings: Using fallback data, Strapi not available")
+    console.warn("Site Settings: Using fallback data, Strapi not available")
     return null
   }
 }

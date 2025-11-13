@@ -83,10 +83,10 @@ export default function BlogPage() {
         const industries = Array.from(
           new Set(displayPosts.map((post: any) => post.attributes.industry).filter(Boolean)),
         ) as string[]
-        console.log("[v0] Available industries:", industries)
+        console.log("Available industries:", industries)
         setAvailableIndustries(industries)
       } catch (error) {
-        console.error("[v0] Error fetching blog posts:", error)
+        console.error("Error fetching blog posts:", error)
       } finally {
         setLoading(false)
       }
@@ -96,19 +96,19 @@ export default function BlogPage() {
   }, [])
 
   const handleFilterChange = (industry: string) => {
-    console.log("[v0] Filter changed to:", industry)
+    console.log("Filter changed to:", industry)
     setActiveFilter(industry)
 
     if (industry === "all") {
-      console.log("[v0] Showing all posts:", posts.length)
+      console.log("Showing all posts:", posts.length)
       setFilteredPosts(posts)
     } else {
       const filtered = posts.filter((post: any) => {
         const postIndustry = post.attributes.industry?.toLowerCase()
-        console.log("[v0] Comparing:", postIndustry, "with", industry)
+        console.log("Comparing:", postIndustry, "with", industry)
         return postIndustry === industry.toLowerCase()
       })
-      console.log("[v0] Filtered posts:", filtered.length)
+      console.log("Filtered posts:", filtered.length)
       setFilteredPosts(filtered)
     }
   }
