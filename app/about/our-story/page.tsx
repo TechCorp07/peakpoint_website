@@ -35,152 +35,208 @@ interface ImpactStoryData {
   }
 }
 
+const defaultData: ImpactStoryData = {
+  hero: {
+    title: "Bridging the AI Healthcare Gap in Africa",
+    subtitle:
+      "Ensuring 5 billion people aren't left behind in the AI healthcare revolution through inclusive training, diverse data, and equitable access",
+    backgroundImage: "/african-healthcare-technology.jpg",
+  },
+  mission:
+    "To democratize access to healthcare technology and AI training across Africa, ensuring that African populations are represented in medical AI systems and that healthcare workers have the skills to leverage these technologies for better patient outcomes.",
+  vision:
+    "An Africa where every healthcare worker has access to cutting-edge AI training, where African medical data contributes to global AI systems, and where every patient benefits from AI-powered healthcare that recognizes and serves their unique needs.",
+  problemStatement: {
+    title: "The AI Healthcare Data Gap: 5 Billion People Excluded",
+    description:
+      "Most AI health systems are trained on data from high-income countries, leaving nearly 5 billion people in low and middle-income countries invisible in diagnostic models. Over 80% of genetics studies include only people of European descent (less than 20% of the world's population). Without representative data, AI-powered tools can misdiagnose or fail to recognize conditions in African populations, deepening global health inequalities rather than reducing them.",
+    statistics: [
+      { label: "People Excluded from AI Healthcare", value: "5B+" },
+      { label: "Genetics Studies with African Data", value: "<20%" },
+      { label: "Healthcare Worker Shortage in Africa", value: "6.1M" },
+      { label: "Countries We're Transforming", value: "12+" },
+    ],
+  },
+  solution: {
+    title: "Our Approach: Building Inclusive AI Healthcare Infrastructure",
+    description:
+      "Peak Point Services addresses the AI healthcare gap through comprehensive training programs, diverse medical data annotation, and sustainable employment creation that ensures African populations are represented in global AI systems.",
+    approaches: [
+      {
+        title: "Medical AI Data Annotation Training",
+        description:
+          "We train African healthcare professionals to annotate medical images and data for AI systems, ensuring diverse representation in diagnostic algorithms. This creates both employment and ensures AI systems work accurately for African populations.",
+      },
+      {
+        title: "MRI & Medical Imaging Excellence",
+        description:
+          "By providing world-class training in MRI imaging and interpretation, we enable healthcare workers to contribute high-quality medical data that represents African populations in global AI training datasets.",
+      },
+      {
+        title: "Healthcare Technology Access",
+        description:
+          "We establish training centers with medical imaging technology, giving healthcare workers hands-on experience with tools they wouldn't otherwise access, while generating diverse data for AI systems.",
+      },
+      {
+        title: "Equity-Centered Employment",
+        description:
+          "Our BPO model creates meaningful, well-paying jobs (85% women, 40% youth) in healthcare AI support services, ensuring underserved communities benefit economically from the AI revolution.",
+      },
+    ],
+  },
+  impactMetrics: [
+    {
+      value: "15,000+",
+      label: "Healthcare Workers Trained",
+      description: "In medical imaging, AI data annotation, and RCM",
+    },
+    { value: "12", label: "African Countries", description: "With active training and employment programs" },
+    {
+      value: "2.5M+",
+      label: "Medical Images Annotated",
+      description: "Contributing to diverse AI training datasets",
+    },
+    { value: "85%", label: "Women in Workforce", description: "Promoting gender equality in healthcare tech" },
+    { value: "40%", label: "Youth Employment", description: "Creating opportunities for under-30 professionals" },
+    { value: "$12M+", label: "Economic Impact", description: "In wages and local economic development" },
+  ],
+  focusAreas: [
+    {
+      title: "Medical AI Data Annotation",
+      description:
+        "Training professionals to annotate medical images for AI systems, ensuring African populations are represented in diagnostic algorithms",
+      icon: "🤖",
+    },
+    {
+      title: "MRI & Medical Imaging",
+      description:
+        "Training radiographers in MRI, CT, and X-ray imaging to generate diverse medical data for AI training",
+      icon: "🏥",
+    },
+    {
+      title: "Healthcare Revenue Cycle",
+      description: "Training specialists in healthcare billing and coding to support health systems globally",
+      icon: "💼",
+    },
+    {
+      title: "Health Equity Programs",
+      description:
+        "Ensuring underserved communities have access to AI healthcare training and employment opportunities",
+      icon: "⚖️",
+    },
+  ],
+  sdgAlignment: [
+    {
+      goal: 3,
+      title: "Good Health and Well-being",
+      description: "Ensuring AI healthcare systems work for all populations",
+    },
+    {
+      goal: 4,
+      title: "Quality Education",
+      description: "Providing world-class medical AI and technology training",
+    },
+    { goal: 5, title: "Gender Equality", description: "85% women workforce in healthcare tech" },
+    { goal: 8, title: "Decent Work and Economic Growth", description: "Creating sustainable AI-era jobs" },
+    {
+      goal: 9,
+      title: "Industry, Innovation and Infrastructure",
+      description: "Building AI healthcare infrastructure in Africa",
+    },
+    {
+      goal: 10,
+      title: "Reduced Inequalities",
+      description: "Bridging the AI healthcare gap for 5 billion people",
+    },
+  ],
+  theoryOfChange: {
+    inputs: ["Training Infrastructure", "Medical Technology", "AI Expertise", "Funding & Partnerships"],
+    activities: [
+      "Medical AI Data Annotation",
+      "MRI Imaging Training",
+      "Diverse Dataset Creation",
+      "Technology Access",
+    ],
+    outputs: [
+      "15,000+ Trained Professionals",
+      "2.5M+ Annotated Images",
+      "85% Women Workforce",
+      "12 Countries Served",
+    ],
+    outcomes: ["Inclusive AI Systems", "Economic Empowerment", "Reduced Health Inequalities", "Career Development"],
+    impact:
+      "AI healthcare systems that recognize and serve African populations, ensuring 5 billion people aren't left behind in the AI revolution",
+  },
+}
+
 export default function OurStoryPage() {
-  const [data, setData] = useState<ImpactStoryData | null>(null)
+  const [cmsData, setCmsData] = useState<ImpactStoryData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     // Fetch from CMS
     fetch("/api/impact-story")
       .then((res) => res.json())
-      .then(setData)
-      .catch(() => setData(defaultData))
+      .then((data) => {
+        setCmsData(data)
+        setIsLoading(false)
+      })
+      .catch(() => {
+        setCmsData(null)
+        setIsLoading(false)
+      })
   }, [])
 
-  const defaultData: ImpactStoryData = {
+  const displayData: ImpactStoryData = {
     hero: {
-      title: "Bridging the AI Healthcare Gap in Africa",
-      subtitle:
-        "Ensuring 5 billion people aren't left behind in the AI healthcare revolution through inclusive training, diverse data, and equitable access",
-      backgroundImage: "/african-healthcare-technology.jpg",
+      title: (cmsData?.hero?.title && cmsData.hero.title.trim()) || defaultData.hero.title,
+      subtitle: (cmsData?.hero?.subtitle && cmsData.hero.subtitle.trim()) || defaultData.hero.subtitle,
+      backgroundImage: (cmsData?.hero?.backgroundImage && cmsData.hero.backgroundImage.trim()) || defaultData.hero.backgroundImage,
     },
-    mission:
-      "To democratize access to healthcare technology and AI training across Africa, ensuring that African populations are represented in medical AI systems and that healthcare workers have the skills to leverage these technologies for better patient outcomes.",
-    vision:
-      "An Africa where every healthcare worker has access to cutting-edge AI training, where African medical data contributes to global AI systems, and where every patient benefits from AI-powered healthcare that recognizes and serves their unique needs.",
+    mission: (cmsData?.mission && cmsData.mission.trim()) || defaultData.mission,
+    vision: (cmsData?.vision && cmsData.vision.trim()) || defaultData.vision,
     problemStatement: {
-      title: "The AI Healthcare Data Gap: 5 Billion People Excluded",
-      description:
-        "Most AI health systems are trained on data from high-income countries, leaving nearly 5 billion people in low and middle-income countries invisible in diagnostic models. Over 80% of genetics studies include only people of European descent (less than 20% of the world's population). Without representative data, AI-powered tools can misdiagnose or fail to recognize conditions in African populations, deepening global health inequalities rather than reducing them.",
-      statistics: [
-        { label: "People Excluded from AI Healthcare", value: "5B+" },
-        { label: "Genetics Studies with African Data", value: "<20%" },
-        { label: "Healthcare Worker Shortage in Africa", value: "6.1M" },
-        { label: "Countries We're Transforming", value: "12+" },
-      ],
+      title: (cmsData?.problemStatement?.title && cmsData.problemStatement.title.trim()) || defaultData.problemStatement.title,
+      description: (cmsData?.problemStatement?.description && cmsData.problemStatement.description.trim()) || defaultData.problemStatement.description,
+      statistics: (Array.isArray(cmsData?.problemStatement?.statistics) && cmsData.problemStatement.statistics.length > 0)
+        ? cmsData.problemStatement.statistics
+        : defaultData.problemStatement.statistics,
     },
     solution: {
-      title: "Our Approach: Building Inclusive AI Healthcare Infrastructure",
-      description:
-        "Peak Point Services addresses the AI healthcare gap through comprehensive training programs, diverse medical data annotation, and sustainable employment creation that ensures African populations are represented in global AI systems.",
-      approaches: [
-        {
-          title: "Medical AI Data Annotation Training",
-          description:
-            "We train African healthcare professionals to annotate medical images and data for AI systems, ensuring diverse representation in diagnostic algorithms. This creates both employment and ensures AI systems work accurately for African populations.",
-        },
-        {
-          title: "MRI & Medical Imaging Excellence",
-          description:
-            "By providing world-class training in MRI imaging and interpretation, we enable healthcare workers to contribute high-quality medical data that represents African populations in global AI training datasets.",
-        },
-        {
-          title: "Healthcare Technology Access",
-          description:
-            "We establish training centers with medical imaging technology, giving healthcare workers hands-on experience with tools they wouldn't otherwise access, while generating diverse data for AI systems.",
-        },
-        {
-          title: "Equity-Centered Employment",
-          description:
-            "Our BPO model creates meaningful, well-paying jobs (85% women, 40% youth) in healthcare AI support services, ensuring underserved communities benefit economically from the AI revolution.",
-        },
-      ],
+      title: (cmsData?.solution?.title && cmsData.solution.title.trim()) || defaultData.solution.title,
+      description: (cmsData?.solution?.description && cmsData.solution.description.trim()) || defaultData.solution.description,
+      approaches: (Array.isArray(cmsData?.solution?.approaches) && cmsData.solution.approaches.length > 0)
+        ? cmsData.solution.approaches
+        : defaultData.solution.approaches,
     },
-    impactMetrics: [
-      {
-        value: "15,000+",
-        label: "Healthcare Workers Trained",
-        description: "In medical imaging, AI data annotation, and RCM",
-      },
-      { value: "12", label: "African Countries", description: "With active training and employment programs" },
-      {
-        value: "2.5M+",
-        label: "Medical Images Annotated",
-        description: "Contributing to diverse AI training datasets",
-      },
-      { value: "85%", label: "Women in Workforce", description: "Promoting gender equality in healthcare tech" },
-      { value: "40%", label: "Youth Employment", description: "Creating opportunities for under-30 professionals" },
-      { value: "$12M+", label: "Economic Impact", description: "In wages and local economic development" },
-    ],
-    focusAreas: [
-      {
-        title: "Medical AI Data Annotation",
-        description:
-          "Training professionals to annotate medical images for AI systems, ensuring African populations are represented in diagnostic algorithms",
-        icon: "🤖",
-      },
-      {
-        title: "MRI & Medical Imaging",
-        description:
-          "Training radiographers in MRI, CT, and X-ray imaging to generate diverse medical data for AI training",
-        icon: "🏥",
-      },
-      {
-        title: "Healthcare Revenue Cycle",
-        description: "Training specialists in healthcare billing and coding to support health systems globally",
-        icon: "💼",
-      },
-      {
-        title: "Health Equity Programs",
-        description:
-          "Ensuring underserved communities have access to AI healthcare training and employment opportunities",
-        icon: "⚖️",
-      },
-    ],
-    sdgAlignment: [
-      {
-        goal: 3,
-        title: "Good Health and Well-being",
-        description: "Ensuring AI healthcare systems work for all populations",
-      },
-      {
-        goal: 4,
-        title: "Quality Education",
-        description: "Providing world-class medical AI and technology training",
-      },
-      { goal: 5, title: "Gender Equality", description: "85% women workforce in healthcare tech" },
-      { goal: 8, title: "Decent Work and Economic Growth", description: "Creating sustainable AI-era jobs" },
-      {
-        goal: 9,
-        title: "Industry, Innovation and Infrastructure",
-        description: "Building AI healthcare infrastructure in Africa",
-      },
-      {
-        goal: 10,
-        title: "Reduced Inequalities",
-        description: "Bridging the AI healthcare gap for 5 billion people",
-      },
-    ],
+    impactMetrics: (Array.isArray(cmsData?.impactMetrics) && cmsData.impactMetrics.length > 0)
+      ? cmsData.impactMetrics
+      : defaultData.impactMetrics,
+    focusAreas: (Array.isArray(cmsData?.focusAreas) && cmsData.focusAreas.length > 0)
+      ? cmsData.focusAreas
+      : defaultData.focusAreas,
+    sdgAlignment: (Array.isArray(cmsData?.sdgAlignment) && cmsData.sdgAlignment.length > 0)
+      ? cmsData.sdgAlignment
+      : defaultData.sdgAlignment,
     theoryOfChange: {
-      inputs: ["Training Infrastructure", "Medical Technology", "AI Expertise", "Funding & Partnerships"],
-      activities: [
-        "Medical AI Data Annotation",
-        "MRI Imaging Training",
-        "Diverse Dataset Creation",
-        "Technology Access",
-      ],
-      outputs: [
-        "15,000+ Trained Professionals",
-        "2.5M+ Annotated Images",
-        "85% Women Workforce",
-        "12 Countries Served",
-      ],
-      outcomes: ["Inclusive AI Systems", "Economic Empowerment", "Reduced Health Inequalities", "Career Development"],
-      impact:
-        "AI healthcare systems that recognize and serve African populations, ensuring 5 billion people aren't left behind in the AI revolution",
+      inputs: (Array.isArray(cmsData?.theoryOfChange?.inputs) && cmsData.theoryOfChange.inputs.length > 0)
+        ? cmsData.theoryOfChange.inputs
+        : defaultData.theoryOfChange.inputs,
+      activities: (Array.isArray(cmsData?.theoryOfChange?.activities) && cmsData.theoryOfChange.activities.length > 0)
+        ? cmsData.theoryOfChange.activities
+        : defaultData.theoryOfChange.activities,
+      outputs: (Array.isArray(cmsData?.theoryOfChange?.outputs) && cmsData.theoryOfChange.outputs.length > 0)
+        ? cmsData.theoryOfChange.outputs
+        : defaultData.theoryOfChange.outputs,
+      outcomes: (Array.isArray(cmsData?.theoryOfChange?.outcomes) && cmsData.theoryOfChange.outcomes.length > 0)
+        ? cmsData.theoryOfChange.outcomes
+        : defaultData.theoryOfChange.outcomes,
+      impact: (cmsData?.theoryOfChange?.impact && cmsData.theoryOfChange.impact.trim()) || defaultData.theoryOfChange.impact,
     },
   }
 
-  const displayData = data || defaultData
+  const isCMSDown = !cmsData && !isLoading
+  const isDevelopment = process.env.NODE_ENV === "development"
 
   return (
     <main className="pt-20 min-h-screen bg-background">
@@ -446,6 +502,13 @@ export default function OurStoryPage() {
             </div>
           </div>
         </section>
+
+        {/* Dev Warning Banner */}
+        {isDevelopment && isCMSDown && (
+          <div className="fixed bottom-4 right-4 bg-yellow-500 text-black px-4 py-2 rounded shadow-lg text-sm z-50">
+            ⚠️ Using fallback data (CMS unavailable)
+          </div>
+        )}
     </main>
   )
 }
