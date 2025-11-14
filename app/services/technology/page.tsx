@@ -75,14 +75,6 @@ export default async function TechnologyPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      {isStrapiDown && (
-        <div className="bg-yellow-50 border-b border-yellow-200 py-3 px-4 text-center">
-          <p className="text-sm text-yellow-800">
-            ⚠️ Development Mode: Showing sample content. Connect Strapi CMS to manage this content.
-          </p>
-        </div>
-      )}
-
       {/* Hero Section */}
       <section className="relative bg-primary py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/40 to-primary/30 z-10" />

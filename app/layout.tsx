@@ -1,6 +1,9 @@
+import { strapi } from "@/lib/strapi"
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -20,14 +23,42 @@ export const metadata: Metadata = {
     generator: 'v0.app'
 }
 
-export default function RootLayout({
+// Fetch once at layout level
+async function getLayoutData() {
+  const [siteSettings, footerSettings, footerNav] = await Promise.all([
+    strapi.getSiteSettings(),
+    strapi.getFooterSettings(),
+    strapi.getFooterNavigation(),
+  ])
+  
+  return {
+    siteSettings: siteSettings?.data || null,
+    footerSettings: footerSettings?.data || null,
+    footerNav: footerNav?.data || null,
+  }
+}
+
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
+  const layoutData = await getLayoutData()
+
   return (
     <html lang="en">
-      <body className={`${inter.className} font-sans antialiased`}>{children}</body>
+      <body>
+        <Header 
+          logo={layoutData.siteSettings?.logo?.data?.attributes?.url}
+          siteName={layoutData.siteSettings?.siteName}
+        />
+        {children}
+        <Footer 
+          siteSettings={layoutData.siteSettings}
+          footerSettings={layoutData.footerSettings}
+          footerNav={layoutData.footerNav}
+        />
+      </body>
     </html>
   )
 }

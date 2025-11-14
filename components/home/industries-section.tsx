@@ -94,13 +94,6 @@ export function IndustriesSection({
   return (
     <section className="py-24 bg-gradient-to-b from-secondary via-blue-50/30 to-secondary">
       <div className="container mx-auto px-4 lg:px-8">
-        {showDevWarning && (
-          <div className="mb-8 bg-yellow-50 border border-yellow-200 rounded-lg py-3 px-4 text-center">
-            <p className="text-sm text-yellow-800">
-              ⚠️ Development Mode: Showing sample content. Connect Strapi CMS to manage industries.
-            </p>
-          </div>
-        )}
 
         <div className="text-center mb-16">
           <motion.div

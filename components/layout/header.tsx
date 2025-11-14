@@ -11,10 +11,10 @@ interface HeaderProps {
   siteName?: string
 }
 
-export async function Header() {
-  const siteSettings = await strapi.getSiteSettings()
-  const logo = siteSettings?.data?.logo?.data?.attributes?.url || "/logo.png"
-  const siteName = siteSettings?.data?.siteName || "Peak Point Services"
+export function Header({ logo = "/logo.png", siteName = "Peak Point Services" }: HeaderProps) {
+  const siteSettings = strapi.getSiteSettings()
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return <HeaderClient logo={logo} siteName={siteName} />
 }
@@ -61,12 +61,8 @@ function HeaderClient({ logo, siteName }: HeaderProps) {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center group">
             <Image
-              src={logo || "/placeholder.svg"}
-              alt={siteName}
-              width={200}
-              height={50}
-              className="h-10 w-auto transition-transform group-hover:scale-105"
-              priority
+              src={logo || "/placeholder.svg"} alt={siteName} width={200} height={50}
+              className="h-10 w-auto transition-transform group-hover:scale-105" priority
             />
           </Link>
 

@@ -111,18 +111,6 @@ export default async function TeamPage() {
           </div>
         </section>
 
-        {/* Strapi down warning banner */}
-        {isStrapiDown && (
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-            <div className="container mx-auto px-4 lg:px-8">
-              <p className="text-sm text-yellow-700">
-                ⚠️ <strong>Development Mode:</strong> Showing sample team members. Connect Strapi CMS to manage real
-                content.
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Leadership Philosophy */}
         <section className="py-20 bg-gradient-to-b from-white to-gray-50">
           <div className="container mx-auto px-4 lg:px-8">

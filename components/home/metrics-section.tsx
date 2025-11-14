@@ -77,13 +77,6 @@ export function MetricsSection({
 }: MetricsSectionProps) {
   return (
     <section className="py-24 bg-gradient-to-b from-secondary via-blue-50/30 to-muted relative">
-      {showDevWarning && (
-        <div className="absolute top-0 left-0 right-0 z-20 bg-yellow-50 border-b border-yellow-200 py-2 px-4 text-center">
-          <p className="text-xs text-yellow-800">
-            ⚠️ Development Mode: Showing sample metrics. Connect Strapi CMS to manage metrics content.
-          </p>
-        </div>
-      )}
 
       <div className="container mx-auto px-4">
         <motion.div

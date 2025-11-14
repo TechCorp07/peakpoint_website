@@ -34,13 +34,6 @@ export function PartnersScroll({
 
   return (
     <section className="py-16 bg-white border-y border-slate-200 relative">
-      {showDevWarning && (
-        <div className="absolute top-0 left-0 right-0 z-20 bg-yellow-50 border-b border-yellow-200 py-2 px-4 text-center">
-          <p className="text-xs text-yellow-800">
-            ⚠️ Development Mode: Showing sample partners. Connect Strapi CMS to manage partner logos.
-          </p>
-        </div>
-      )}
 
       <div className="container mx-auto px-4 mb-8">
         <h3 className="text-2xl font-semibold text-center text-slate-900">{sectionTitle}</h3>

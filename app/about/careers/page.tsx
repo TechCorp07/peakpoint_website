@@ -209,14 +209,6 @@ export default async function CareersPage() {
               </div>
             ) : (
               <div className="max-w-5xl mx-auto space-y-6">
-                {!isStrapiRunning && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                    <p className="text-sm text-yellow-800">
-                      ⚠️ Development Mode: Showing sample job listings. Connect to Strapi CMS to manage real job
-                      postings.
-                    </p>
-                  </div>
-                )}
                 {displayJobs.map((job: any, index: number) => (
                   <div
                     key={index}

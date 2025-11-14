@@ -1,61 +1,23 @@
 import Link from "next/link"
 import Image from "next/image"
-import { strapi } from "@/lib/strapi"
 
-async function getFooterData() {
-  try {
-    const data = await strapi.getFooterSettings()
-    if (!data || !data.data) {
-      return null
-    }
-    return data.data
-  } catch (error) {
-    console.warn("Footer: Using fallback data, Strapi not available")
-    return null
-  }
+interface FooterProps {
+  siteSettings: any
+  footerSettings: any
+  footerNav: any
 }
 
-async function getFooterNavigation() {
-  try {
-    const data = await strapi.getFooterNavigation()
-    if (!data || !data.data) {
-      return null
-    }
-    return data.data
-  } catch (error) {
-    console.warn("Footer Navigation: Using fallback data, Strapi not available")
-    return null
-  }
-}
-
-async function getSiteSettings() {
-  try {
-    const data = await strapi.getSiteSettings()
-    if (!data || !data.data) {
-      return null
-    }
-    return data.data
-  } catch (error) {
-    console.warn("Site Settings: Using fallback data, Strapi not available")
-    return null
-  }
-}
-
-export async function Footer() {
+export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps) {
   const currentYear = new Date().getFullYear()
-  const footerData = await getFooterData()
-  const footerNav = await getFooterNavigation()
-  const siteSettings = await getSiteSettings()
 
-  const socialLinks = footerData?.socialLinks || {
+  const socialLinks = footerSettings?.socialLinks || {
     linkedin: "#",
     facebook: "#",
     twitter: "#",
     youtube: "#",
     whatsapp: "#",
   }
-
-  const contactInfo = footerData?.contactInfo || {
+  const contactInfo = footerSettings?.contactInfo || {
     email: "info@peakpoint.africa",
     phone: "+254 XXX XXX XXX",
     address: "Nairobi, Kenya",

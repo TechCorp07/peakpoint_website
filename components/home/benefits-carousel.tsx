@@ -94,13 +94,6 @@ export function BenefitsCarousel({
 
   return (
     <section className="py-24 bg-gradient-to-b from-background to-secondary/20 relative">
-      {showDevWarning && (
-        <div className="absolute top-0 left-0 right-0 z-20 bg-yellow-50 border-b border-yellow-200 py-2 px-4 text-center">
-          <p className="text-xs text-yellow-800">
-            ⚠️ Development Mode: Showing sample benefits. Connect Strapi CMS to manage benefits content.
-          </p>
-        </div>
-      )}
 
       <div className="container mx-auto px-4 lg:px-8">
         <motion.div

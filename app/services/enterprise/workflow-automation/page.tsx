@@ -70,15 +70,6 @@ export default async function WorkflowAutomationPage() {
     <div className="min-h-screen">
       <Header />
       <main className="pt-20">
-        {isStrapiDown && (
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-            <div className="container mx-auto px-4 lg:px-8">
-              <p className="text-sm text-yellow-700">
-                ⚠️ <strong>Development Mode:</strong> Showing sample content. Connect Strapi CMS to manage real content.
-              </p>
-            </div>
-          </div>
-        )}
 
         <section className="relative bg-gradient-to-br from-blue-50 via-white to-accent/5 py-24">
           <div className="container mx-auto px-4 lg:px-8">
