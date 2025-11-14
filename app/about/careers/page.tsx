@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { strapi } from "@/lib/strapi"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -85,9 +83,7 @@ export default async function CareersPage() {
   const hasJobs = displayJobs.length > 0
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen bg-background">
         {/* Hero Section */}
         <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
           <Image
@@ -301,8 +297,6 @@ export default async function CareersPage() {
             </Button>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

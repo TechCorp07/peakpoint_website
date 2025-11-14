@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { AIAssistant } from "@/components/ai-assistant/chat-widget"
 import { Target, Eye, Award, Users, TrendingUp, Globe2, Shield } from "lucide-react"
 import Image from "next/image"
@@ -92,10 +90,7 @@ export default async function AboutPage() {
   const isStrapiDown = !response
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen bg-background">
         <section className="relative bg-gradient-to-br from-blue-50 via-white to-accent/5 py-24 overflow-hidden">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
@@ -235,9 +230,7 @@ export default async function AboutPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
       <AIAssistant />
-    </div>
+    </main>
   )
 }

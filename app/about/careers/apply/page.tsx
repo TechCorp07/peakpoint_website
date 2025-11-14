@@ -3,8 +3,6 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -118,9 +116,7 @@ export default function JobApplicationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen bg-background">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-primary to-primary/90 py-16">
           <div className="container mx-auto px-4 lg:px-8">
@@ -299,8 +295,6 @@ export default function JobApplicationPage() {
             )}
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

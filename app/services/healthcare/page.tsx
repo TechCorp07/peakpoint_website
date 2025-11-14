@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { strapi } from "@/lib/strapi"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -66,9 +64,7 @@ export default async function HealthcarePage() {
   const isStrapiDown = !serviceData
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-
+    <main className="pt-20 min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-primary py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/40 to-primary/30 z-10" />
@@ -163,8 +159,6 @@ export default async function HealthcarePage() {
           </Button>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </main>
   )
 }

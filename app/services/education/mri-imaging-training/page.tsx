@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { strapi } from "@/lib/strapi"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -68,9 +66,7 @@ export default async function MRIImagingTrainingPage() {
   const data = isStrapiDown ? defaultData : { ...defaultData, ...strapiData }
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen">
 
         <section className="relative bg-gradient-to-br from-blue-50 via-white to-accent/5 py-24">
           <div className="container mx-auto px-4 lg:px-8">
@@ -147,8 +143,6 @@ export default async function MRIImagingTrainingPage() {
             </Button>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

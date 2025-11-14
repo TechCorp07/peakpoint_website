@@ -2,8 +2,6 @@
 
 import type React from "react"
 
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { AIAssistant } from "@/components/ai-assistant/chat-widget"
 import { useState, useEffect } from "react"
 
@@ -83,9 +81,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
+    <main className="pt-20 min-h-screen">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-24">
           <div className="container mx-auto px-4">
@@ -279,9 +275,7 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
       <AIAssistant />
-    </div>
+    </main>
   )
 }

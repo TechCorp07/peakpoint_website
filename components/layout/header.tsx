@@ -4,7 +4,6 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { strapi } from "@/lib/strapi"
 
 interface HeaderProps {
   logo?: string
@@ -12,14 +11,10 @@ interface HeaderProps {
 }
 
 export function Header({ logo = "/logo.png", siteName = "Peak Point Services" }: HeaderProps) {
-  const siteSettings = strapi.getSiteSettings()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
   return <HeaderClient logo={logo} siteName={siteName} />
 }
 
-function HeaderClient({ logo, siteName }: HeaderProps) {
+function HeaderClient({ logo = "/logo.png", siteName = "Peak Point Services" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -61,8 +56,12 @@ function HeaderClient({ logo, siteName }: HeaderProps) {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center group">
             <Image
-              src={logo || "/placeholder.svg"} alt={siteName} width={200} height={50}
-              className="h-10 w-auto transition-transform group-hover:scale-105" priority
+              src={logo || "/logo.png"}
+              alt={siteName}
+              width={200}
+              height={50}
+              className="h-10 w-auto transition-transform group-hover:scale-105"
+              priority
             />
           </Link>
 
@@ -175,7 +174,7 @@ function HeaderClient({ logo, siteName }: HeaderProps) {
           </nav>
 
           <div className="hidden md:block">
-            <Button asChild className="bg-accent text-white hover:bg-accent-hover font-semibold">
+            <Button asChild size="lg" className="bg-accent text-white hover:bg-accent-hover font-semibold px-9 py-6 text-lg">
               <Link href="/contact">Impact</Link>
             </Button>
           </div>

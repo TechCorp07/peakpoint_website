@@ -1,11 +1,9 @@
 "use client"
 
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useEffect, useState } from "react"
 import Image from "next/image"
+import { useEffect, useState } from "react"
 
 interface ImpactStoryData {
   hero: {
@@ -185,9 +183,7 @@ export default function OurStoryPage() {
   const displayData = data || defaultData
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen bg-background">
         {/* Hero Section with Background Image */}
         <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
           <Image
@@ -450,8 +446,6 @@ export default function OurStoryPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

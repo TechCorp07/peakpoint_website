@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { HeroSlider } from "@/components/home/hero-slider"
 import { IndustriesSection } from "@/components/home/industries-section"
 import { BenefitsCarousel } from "@/components/home/benefits-carousel"
@@ -95,38 +93,34 @@ export default async function HomePage() {
   }))
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        <HeroSlider slides={heroSlides} showDevWarning={isStrapiDown} />
-        <IndustriesSection
-          title={industriesData.title}
-          subtitle={industriesData.subtitle}
-          industries={industriesData.industries}
-          showDevWarning={isStrapiDown}
-        />
-        <BenefitsCarousel
-          benefits={benefitsSection?.benefits}
-          sectionTitle={benefitsSection?.sectionTitle}
-          sectionSubtitle={benefitsSection?.sectionSubtitle}
-          showDevWarning={!benefitsSection}
-        />
-        <TestimonialsSection caseStudies={testimonialsCaseStudies} />
-        <MetricsSection
-          metrics={metricsSection?.metrics}
-          sectionTitle={metricsSection?.sectionTitle}
-          sectionSubtitle={metricsSection?.sectionSubtitle}
-          showDevWarning={!metricsSection}
-        />
-        <PartnersScroll
-          partners={partnersSection?.partners}
-          sectionTitle={partnersSection?.sectionTitle}
-          showDevWarning={!partnersSection}
-        />
-        <CaseStudiesSection caseStudies={caseStudiesSectionData} />
-      </main>
-      <Footer />
+    <>
+      <HeroSlider slides={heroSlides} showDevWarning={isStrapiDown} />
+      <IndustriesSection
+        title={industriesData.title}
+        subtitle={industriesData.subtitle}
+        industries={industriesData.industries}
+        showDevWarning={isStrapiDown}
+      />
+      <BenefitsCarousel
+        benefits={benefitsSection?.benefits}
+        sectionTitle={benefitsSection?.sectionTitle}
+        sectionSubtitle={benefitsSection?.sectionSubtitle}
+        showDevWarning={!benefitsSection}
+      />
+      <TestimonialsSection caseStudies={testimonialsCaseStudies} />
+      <MetricsSection
+        metrics={metricsSection?.metrics}
+        sectionTitle={metricsSection?.sectionTitle}
+        sectionSubtitle={metricsSection?.sectionSubtitle}
+        showDevWarning={!metricsSection}
+      />
+      <PartnersScroll
+        partners={partnersSection?.partners}
+        sectionTitle={partnersSection?.sectionTitle}
+        showDevWarning={!partnersSection}
+      />
+      <CaseStudiesSection caseStudies={caseStudiesSectionData} />
       <AIAssistant />
-    </div>
+    </>
   )
 }

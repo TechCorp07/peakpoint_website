@@ -1,7 +1,5 @@
 "use client"
 
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Headphones, Calculator, Heart, Brain, Users, Shield, TrendingUp, Mail } from "lucide-react"
 
 const services = [
@@ -64,9 +62,7 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
+    <main className="min-h-screen">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-slate-900 to-slate-800 text-white py-24">
           <div className="container mx-auto px-4">
@@ -120,8 +116,6 @@ export default function ServicesPage() {
             </a>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

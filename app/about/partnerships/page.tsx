@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -136,10 +134,7 @@ export default async function PartnershipsPage() {
   const isStrapiDown = !response
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen bg-background">
         <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
           <Image
             src={pageData.heroImage || "/placeholder.svg"}
@@ -372,8 +367,6 @@ export default async function PartnershipsPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

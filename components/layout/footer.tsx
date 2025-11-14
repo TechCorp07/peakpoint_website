@@ -8,7 +8,8 @@ interface FooterProps {
 }
 
 export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps) {
-  const currentYear = new Date().getFullYear()
+  // Use a static year or get from settings to avoid hydration issues
+  const currentYear = footerSettings?.currentYear || new Date().getFullYear()
 
   const socialLinks = footerSettings?.socialLinks || {
     linkedin: "#",
@@ -72,7 +73,7 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
           {/* Company Info */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
-              <Image src={logo || "/placeholder.svg"} alt={siteName} width={180} height={45} className="h-9 w-auto" />
+              <Image src={logo} alt={siteName} width={180} height={45} className="h-9 w-auto" />
             </Link>
             <p className="text-foreground/70 text-sm leading-relaxed mb-6">{companyTagline}</p>
             <div className="flex gap-4">

@@ -1,7 +1,5 @@
 "use client"
 
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { IndustryFilter } from "@/components/insights/industry-filter"
 import Link from "next/link"
 import Image from "next/image"
@@ -86,9 +84,7 @@ export default function NewsPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen">
         <section className="relative bg-primary py-24 overflow-hidden">
           <div className="absolute inset-0">
             <Image src="/business-news-announcement-press-conference.jpg" alt="News Hero Background" fill className="object-cover" priority />
@@ -176,8 +172,6 @@ export default function NewsPage() {
             )}
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

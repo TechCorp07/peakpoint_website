@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { strapi } from "@/lib/strapi"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -78,9 +76,7 @@ export default async function CaseStudiesPage() {
   const caseStudies = isStrapiDown ? defaultCaseStudies : caseStudiesData
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="pt-20">
+    <main className="pt-20 min-h-screen">
         {/* Hero Section */}
         <section className="relative bg-primary py-24 overflow-hidden">
           <div className="absolute inset-0">
@@ -195,8 +191,6 @@ export default async function CaseStudiesPage() {
             </Button>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </main>
   )
 }

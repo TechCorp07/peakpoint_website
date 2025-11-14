@@ -8,6 +8,28 @@ import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
+// Default settings to prevent hydration errors when CMS is unavailable
+const defaultSiteSettings = {
+  logo: { data: { attributes: { url: "/logo.png" } } },
+  siteName: "Peak Point Services"
+}
+
+const defaultFooterSettings = {
+  currentYear: new Date().getFullYear(),
+  socialLinks: {
+    linkedin: "#",
+    facebook: "#",
+    twitter: "#",
+    youtube: "#",
+    whatsapp: "#",
+  },
+  contactInfo: {
+    email: "info@peakpoint.africa",
+    phone: "+254 XXX XXX XXX",
+    address: "Nairobi, Kenya",
+  }
+}
+
 export const metadata: Metadata = {
   title: "Peak Point Africa | Enterprise BPO Solutions",
   description:
@@ -30,10 +52,10 @@ async function getLayoutData() {
     strapi.getFooterSettings(),
     strapi.getFooterNavigation(),
   ])
-  
+
   return {
-    siteSettings: siteSettings?.data || null,
-    footerSettings: footerSettings?.data || null,
+    siteSettings: siteSettings?.data || defaultSiteSettings,
+    footerSettings: footerSettings?.data || defaultFooterSettings,
     footerNav: footerNav?.data || null,
   }
 }
