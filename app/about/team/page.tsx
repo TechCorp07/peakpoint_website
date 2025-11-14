@@ -68,9 +68,18 @@ export default async function TeamPage() {
       expertise: "Partnership Development, Grant Writing, Stakeholder Engagement",
     },
   ]
+  
+  const teamArray = teamData?.data ? teamData.data.map((member: any) => ({
+    name: member.attributes?.name || member.name,
+    role: member.attributes?.role || member.role,
+    bio: member.attributes?.bio || member.bio,
+    image: member.attributes?.image?.data?.attributes?.url || member.image,
+    linkedin: member.attributes?.linkedin || member.linkedin,
+    expertise: member.attributes?.expertise || member.expertise,
+  })) : null
 
-  const isStrapiDown = teamData === null
-  const team = isStrapiDown ? defaultTeam : teamData
+  const isStrapiDown = !teamArray || teamArray.length === 0
+  const team = isStrapiDown ? defaultTeam : teamArray
 
   return (
     <div className="min-h-screen bg-background">
