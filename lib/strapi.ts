@@ -1,3 +1,5 @@
+import { cache } from 'react'
+
 interface StrapiResponse<T> {
   data: T
   meta?: {
@@ -196,19 +198,19 @@ class StrapiClient {
   }
 
   // Footer Settings
-  async getFooterSettings() {
+  getFooterSettings = cache(async () => {
     return this.fetch<StrapiResponse<any>>("/footer-setting?populate=*")
-  }
+  })
 
   // Footer Navigation (single type)
-  async getFooterNavigation() {
+  getFooterNavigation = cache(async () => {
     return this.fetch<StrapiResponse<any>>("/footer-navigation?populate=*")
-  }
+  })
 
   // Site Settings
-  async getSiteSettings() {
+  getSiteSettings = cache(async () => {
     return this.fetch<StrapiResponse<any>>("/site-setting?populate=*")
-  }
+  })
 
   // Homepage Content (single type)
   async getHomepageContent() {
