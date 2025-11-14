@@ -1,20 +1,24 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { neon } from "@neondatabase/serverless"
+import { Pool } from "pg"
 
-function getSqlClient() {
+// Create a connection pool
+function getPool() {
   const connectionString = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL
 
   if (!connectionString) {
     throw new Error("Database connection string not configured")
   }
 
-  return neon(connectionString)
+  return new Pool({
+    connectionString,
+    ssl: false, // Disable SSL for local PostgreSQL
+  })
 }
 
 export async function POST(request: NextRequest) {
+  const pool = getPool()
+  
   try {
-    const sql = getSqlClient()
-
     const body = await request.json()
 
     const {
@@ -38,8 +42,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert enrollment into database
-    const result = await sql`
-      INSERT INTO enrollments (
+    const result = await pool.query(
+      `INSERT INTO enrollments (
         first_name,
         last_name,
         email,
@@ -53,31 +57,28 @@ export async function POST(request: NextRequest) {
         learning_goals,
         how_heard_about_us,
         status
-      ) VALUES (
-        ${firstName},
-        ${lastName},
-        ${email},
-        ${phone || null},
-        ${company || null},
-        ${jobTitle || null},
-        ${trainingProgram},
-        ${trainingType},
-        ${experienceLevel},
-        ${preferredStartDate || null},
-        ${learningGoals || null},
-        ${howHeardAboutUs || null},
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      RETURNING id, email, created_at`,
+      [
+        firstName,
+        lastName,
+        email,
+        phone || null,
+        company || null,
+        jobTitle || null,
+        trainingProgram,
+        trainingType,
+        experienceLevel,
+        preferredStartDate || null,
+        learningGoals || null,
+        howHeardAboutUs || null,
         'pending'
-      )
-      RETURNING id, email, created_at
-    `
-
-    // TODO: Send confirmation email to user
-    // TODO: Send notification to admin
-    // TODO: Sync to ERPNext (future integration)
+      ]
+    )
 
     return NextResponse.json({
       success: true,
-      enrollment: result[0],
+      enrollment: result.rows[0],
       message: "Enrollment submitted successfully",
     })
   } catch (error) {
@@ -88,29 +89,35 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ error: "Failed to process enrollment" }, { status: 500 })
+  } finally {
+    await pool.end()
   }
 }
 
 export async function GET(request: NextRequest) {
+  const pool = getPool()
+  
   try {
-    const sql = getSqlClient()
-
     const { searchParams } = new URL(request.url)
     const status = searchParams.get("status")
     const email = searchParams.get("email")
 
     let query
+    let values: any[] = []
+    
     if (status) {
-      query = sql`SELECT * FROM enrollments WHERE status = ${status} ORDER BY created_at DESC`
+      query = 'SELECT * FROM enrollments WHERE status = $1 ORDER BY created_at DESC'
+      values = [status]
     } else if (email) {
-      query = sql`SELECT * FROM enrollments WHERE email = ${email} ORDER BY created_at DESC`
+      query = 'SELECT * FROM enrollments WHERE email = $1 ORDER BY created_at DESC'
+      values = [email]
     } else {
-      query = sql`SELECT * FROM enrollments ORDER BY created_at DESC LIMIT 100`
+      query = 'SELECT * FROM enrollments ORDER BY created_at DESC LIMIT 100'
     }
 
-    const enrollments = await query
+    const result = await pool.query(query, values)
 
-    return NextResponse.json({ enrollments })
+    return NextResponse.json({ enrollments: result.rows })
   } catch (error) {
     console.error("Failed to fetch enrollments:", error)
 
@@ -119,5 +126,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ error: "Failed to fetch enrollments" }, { status: 500 })
+  } finally {
+    await pool.end()
   }
 }
