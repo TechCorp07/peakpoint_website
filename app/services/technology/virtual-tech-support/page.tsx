@@ -60,7 +60,16 @@ export default async function VirtualTechSupportPage() {
     ],
   }
 
-  const data = serviceData || defaultData
+  const data = serviceData 
+  ? {
+      title: serviceData.title || defaultData.title,
+      subtitle: serviceData.subtitle || defaultData.subtitle,
+      description: serviceData.description || defaultData.description,
+      features: serviceData.features || defaultData.features,
+      benefits: serviceData.benefits || defaultData.benefits,
+      stats: serviceData.stats || defaultData.stats,
+    }
+  : defaultData
 
   const iconMap: any = {
     Headphones,

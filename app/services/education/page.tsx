@@ -18,8 +18,6 @@ async function getServiceData() {
 export default async function EducationPage() {
   const serviceData = await getServiceData()
 
-  const isStrapiDown = serviceData === null
-
   const defaultData = {
     title: "Education & Training Services",
     subtitle: "Empowering Your Workforce with Industry-Leading Training Programs",
@@ -65,7 +63,17 @@ export default async function EducationPage() {
     ],
   }
 
-  const data = isStrapiDown ? defaultData : serviceData
+  const data = serviceData?.attributes 
+  ? {
+      title: serviceData.attributes.title || defaultData.title,
+      subtitle: serviceData.attributes.subtitle || defaultData.subtitle,
+      description: serviceData.attributes.description || defaultData.description,
+      services: serviceData.attributes.services || defaultData.services,
+      benefits: serviceData.attributes.benefits || defaultData.benefits,
+    }
+  : defaultData
+  
+  const isStrapiDown = !serviceData
 
   return (
     <div className="flex flex-col min-h-screen">

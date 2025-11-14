@@ -18,8 +18,6 @@ async function getServiceData() {
 export default async function EnterprisePage() {
   const serviceData = await getServiceData()
 
-  const isStrapiDown = serviceData === null
-
   const defaultData = {
     title: "Enterprise Solutions",
     subtitle: "Scalable Technology Solutions for Modern Enterprises",
@@ -60,8 +58,18 @@ export default async function EnterprisePage() {
     ],
   }
 
-  const data = isStrapiDown ? defaultData : serviceData
+  const data = serviceData?.attributes 
+  ? {
+      title: serviceData.attributes.title || defaultData.title,
+      subtitle: serviceData.attributes.subtitle || defaultData.subtitle,
+      description: serviceData.attributes.description || defaultData.description,
+      services: serviceData.attributes.services || defaultData.services,
+      benefits: serviceData.attributes.benefits || defaultData.benefits,
+    }
+  : defaultData
 
+  const isStrapiDown = !serviceData
+  
   return (
     <div className="flex flex-col min-h-screen">
       <Header />

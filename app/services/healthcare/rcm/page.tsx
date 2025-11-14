@@ -61,8 +61,10 @@ async function getServiceData() {
 export default async function RCMPage() {
   const serviceData = await getServiceData()
 
-  const isStrapiDown = !serviceData || typeof serviceData !== "object" || !serviceData.title
-  const data = isStrapiDown ? defaultData : { ...defaultData, ...serviceData }
+  const strapiData = serviceData?.attributes || serviceData
+
+  const isStrapiDown = !strapiData || typeof strapiData !== "object" || !strapiData.title
+  const data = isStrapiDown ? defaultData : { ...defaultData, ...strapiData }
 
   return (
     <div className="min-h-screen">

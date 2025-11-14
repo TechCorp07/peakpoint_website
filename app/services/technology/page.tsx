@@ -18,8 +18,6 @@ async function getServiceData() {
 export default async function TechnologyPage() {
   const serviceData = await getServiceData()
 
-  const isStrapiDown = serviceData === null
-
   const defaultData = {
     title: "Technology Services",
     subtitle: "Comprehensive IT Support and Quality Assurance Solutions",
@@ -61,7 +59,17 @@ export default async function TechnologyPage() {
     ],
   }
 
-  const data = isStrapiDown ? defaultData : serviceData
+  const data = serviceData?.attributes 
+  ? {
+      title: serviceData.attributes.title || defaultData.title,
+      subtitle: serviceData.attributes.subtitle || defaultData.subtitle,
+      description: serviceData.attributes.description || defaultData.description,
+      services: serviceData.attributes.services || defaultData.services,
+      benefits: serviceData.attributes.benefits || defaultData.benefits,
+    }
+  : defaultData
+
+  const isStrapiDown = !serviceData
 
   return (
     <div className="flex flex-col min-h-screen">

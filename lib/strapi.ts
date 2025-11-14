@@ -15,7 +15,7 @@ class StrapiClient {
   private apiToken: string
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+    this.baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || ""
     this.apiToken = process.env.STRAPI_API_TOKEN || ""
   }
 
@@ -28,24 +28,37 @@ class StrapiClient {
         ...options?.headers,
       }
 
-      const response = await fetch(url, {
-        ...options,
-        headers,
-        next: { revalidate: 300 },
-      })
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 10000)
 
-      if (!response.ok) {
-        console.warn(`Strapi API error: ${response.status} ${response.statusText} for ${endpoint}`)
+      try {
+        const response = await fetch(url, {
+          ...options,
+          headers,
+          signal: controller.signal,
+          next: { revalidate: 300 },
+        })
+
+        clearTimeout(timeout)
+
+        if (!response.ok) {
+          console.warn(`Strapi API error: ${response.status} ${response.statusText} for ${endpoint}`)
+          return null
+        }
+
+        const contentType = response.headers.get("content-type")
+        if (!contentType || !contentType.includes("application/json")) {
+          console.warn(`Strapi returned non-JSON response for ${endpoint}. Is Strapi running?`)
+          return null
+        }
+
+        return response.json()
+      } catch (error) {
+        console.warn(`Failed to fetch from Strapi (${endpoint}):`, error instanceof Error ? error.message : error)
         return null
+      } finally {
+        clearTimeout(timeout)
       }
-
-      const contentType = response.headers.get("content-type")
-      if (!contentType || !contentType.includes("application/json")) {
-        console.warn(`Strapi returned non-JSON response for ${endpoint}. Is Strapi running?`)
-        return null
-      }
-
-      return response.json()
     } catch (error) {
       console.warn(`Failed to fetch from Strapi (${endpoint}):`, error instanceof Error ? error.message : error)
       return null
