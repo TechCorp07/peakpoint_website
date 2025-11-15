@@ -73,8 +73,8 @@ export default async function HomePage() {
     description: slide.description || "",
     ctaText: slide.ctaText || "Learn More",
     ctaLink: slide.ctaLink || "/",
-    backgroundImage: slide.backgroundImage?.data?.attributes?.url
-      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${slide.backgroundImage.data.attributes.url}`
+    backgroundImage: slide.backgroundImage?.url 
+      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${slide.backgroundImage.url}`
       : "/placeholder.svg",
     order: slide.order || 0,
   })) || undefined
@@ -126,7 +126,7 @@ export default async function HomePage() {
         <strong>TRANSFORMED DATA:</strong>
         <pre>{JSON.stringify(heroSlides?.[0], null, 2)}</pre>
       </div>
-      
+
       <HeroSlider slides={heroSlides} showDevWarning={isStrapiDown} />
       <IndustriesSection
         title={industriesData.title}
