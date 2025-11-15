@@ -54,16 +54,38 @@ interface HeroSliderProps {
 export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+
+  // Preload all images when component mounts
+  useEffect(() => {
+    const imagePromises = slides.map((slide) => {
+      return new Promise<void>((resolve, reject) => {
+        const img = new Image()
+        img.src = slide.backgroundImage
+        img.onload = () => resolve()
+        img.onerror = () => reject()
+      })
+    })
+
+    Promise.all(imagePromises)
+      .then(() => {
+        setImagesLoaded(true)
+      })
+      .catch((err) => {
+        console.warn("Some images failed to preload:", err)
+        setImagesLoaded(true) // Continue anyway
+      })
+  }, [slides])
 
   useEffect(() => {
-    if (!isAutoPlaying) return
+    if (!isAutoPlaying || !imagesLoaded) return
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
     }, 7000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying, slides.length])
+  }, [isAutoPlaying, slides.length, imagesLoaded])
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index)
@@ -80,9 +102,17 @@ export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: H
     setIsAutoPlaying(false)
   }
 
+  // Show loading state while images preload
+  if (!imagesLoaded) {
+    return (
+      <section className="relative h-screen w-full overflow-hidden bg-gray-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </section>
+    )
+  }
+
   return (
     <section className="relative h-screen w-full overflow-hidden">
-
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
