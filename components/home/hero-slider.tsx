@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Slide {
   id: number
@@ -54,38 +55,16 @@ interface HeroSliderProps {
 export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const [imagesLoaded, setImagesLoaded] = useState(false)
-
-  // Preload all images when component mounts
-  useEffect(() => {
-    const imagePromises = slides.map((slide) => {
-      return new Promise<void>((resolve, reject) => {
-        const img = new Image()
-        img.src = slide.backgroundImage
-        img.onload = () => resolve()
-        img.onerror = () => reject()
-      })
-    })
-
-    Promise.all(imagePromises)
-      .then(() => {
-        setImagesLoaded(true)
-      })
-      .catch((err) => {
-        console.warn("Some images failed to preload:", err)
-        setImagesLoaded(true) // Continue anyway
-      })
-  }, [slides])
 
   useEffect(() => {
-    if (!isAutoPlaying || !imagesLoaded) return
+    if (!isAutoPlaying) return
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
     }, 7000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying, slides.length, imagesLoaded])
+  }, [isAutoPlaying, slides.length])
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index)
@@ -102,31 +81,40 @@ export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: H
     setIsAutoPlaying(false)
   }
 
-  // Show loading state while images preload
-  if (!imagesLoaded) {
-    return (
-      <section className="relative h-screen w-full overflow-hidden bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </section>
-    )
-  }
-
   return (
     <section className="relative h-screen w-full overflow-hidden">
+      {/* Preload all images hidden in the background */}
+      <div className="hidden">
+        {slides.map((slide, index) => (
+          <Image
+            key={slide.id}
+            src={slide.backgroundImage}
+            alt={`Preload ${slide.title}`}
+            width={1920}
+            height={1080}
+            priority={index === 0}
+          />
+        ))}
+      </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.5 }}
           className="absolute inset-0"
         >
           <div className="absolute inset-0">
-            <img
-              src={slides[currentSlide].backgroundImage || "/placeholder.svg?height=1080&width=1920"}
+            <Image
+              src={slides[currentSlide].backgroundImage || "/placeholder.svg"}
               alt={slides[currentSlide].title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              quality={90}
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
           </div>
@@ -137,7 +125,7 @@ export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: H
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.8 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
                   className="space-y-8"
                 >
                   <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white text-balance leading-tight">
