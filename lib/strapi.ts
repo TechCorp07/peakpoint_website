@@ -214,7 +214,7 @@ class StrapiClient {
 
   // Homepage Content (single type)
   async getHomepageContent() {
-    return this.fetch<StrapiResponse<any>>("/homepage-content?populate=*")
+    return this.fetch<StrapiResponse<any>>("/homepage-content?populate[heroSlides][populate]=*")
   }
 
   // About Page (single type)
