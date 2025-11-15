@@ -65,8 +65,19 @@ export default async function HomePage() {
 
   const isStrapiDown = !homepageContent
 
-  const heroSlides = homepageContent?.heroSlides || undefined
   const industriesData = homepageContent?.industriesSection || {}
+
+  const heroSlides = homepageContent?.heroSlides?.map((slide: any) => ({
+    id: slide.id,
+    title: slide.title || "",
+    description: slide.description || "",
+    ctaText: slide.ctaText || "Learn More",
+    ctaLink: slide.ctaLink || "/",
+    backgroundImage: slide.backgroundImage?.data?.attributes?.url
+      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${slide.backgroundImage.data.attributes.url}`
+      : "/placeholder.svg",
+    order: slide.order || 0,
+  })) || undefined
 
   const testimonialsCaseStudies = caseStudiesData?.slice(0, 3).map((study: any) => ({
     id: study.id,
