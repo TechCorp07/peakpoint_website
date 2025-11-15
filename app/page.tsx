@@ -63,6 +63,13 @@ export default async function HomePage() {
     getCaseStudies(),
   ])
 
+    // 🔍 DEBUG: Log the actual structure
+  console.log('=== HOMEPAGE CONTENT ===')
+  console.log(JSON.stringify(homepageContent, null, 2))
+  
+  console.log('=== HERO SLIDES ===')
+  console.log(JSON.stringify(homepageContent?.heroSlides, null, 2))
+  
   const isStrapiDown = !homepageContent
 
   const industriesData = homepageContent?.industriesSection || {}
