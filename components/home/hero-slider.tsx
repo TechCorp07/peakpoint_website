@@ -56,6 +56,17 @@ export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: H
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
+  // Preload all images using the browser's native preloading
+  useEffect(() => {
+    slides.forEach((slide) => {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.as = 'image'
+      link.href = slide.backgroundImage
+      document.head.appendChild(link)
+    })
+  }, [slides])
+
   useEffect(() => {
     if (!isAutoPlaying) return
 
@@ -83,20 +94,6 @@ export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: H
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Preload all images hidden in the background */}
-      <div className="hidden">
-        {slides.map((slide, index) => (
-          <Image
-            key={slide.id}
-            src={slide.backgroundImage}
-            alt={`Preload ${slide.title}`}
-            width={1920}
-            height={1080}
-            priority={index === 0}
-          />
-        ))}
-      </div>
-
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -112,7 +109,7 @@ export function HeroSlider({ slides = defaultSlides, showDevWarning = false }: H
               alt={slides[currentSlide].title}
               fill
               className="object-cover"
-              priority
+              priority={currentSlide === 0}
               quality={90}
               sizes="100vw"
             />
