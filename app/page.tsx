@@ -62,13 +62,6 @@ export default async function HomePage() {
     getPartnersSection(),
     getCaseStudies(),
   ])
-
-    // 🔍 DEBUG: Log the actual structure
-  console.log('=== HOMEPAGE CONTENT ===')
-  console.log(JSON.stringify(homepageContent, null, 2))
-  
-  console.log('=== HERO SLIDES ===')
-  console.log(JSON.stringify(homepageContent?.heroSlides, null, 2))
   
   const isStrapiDown = !homepageContent
 
@@ -112,6 +105,28 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* 🔍 TEMPORARY DEBUG PANEL - Remove after fixing */}
+      <div style={{ 
+        position: 'fixed', 
+        top: 0, 
+        right: 0, 
+        background: 'black', 
+        color: 'lime', 
+        padding: '20px',
+        maxWidth: '400px',
+        maxHeight: '400px',
+        overflow: 'auto',
+        zIndex: 9999,
+        fontSize: '10px',
+        fontFamily: 'monospace'
+      }}>
+        <strong>RAW STRAPI DATA:</strong>
+        <pre>{JSON.stringify(homepageContent?.heroSlides?.[0], null, 2)}</pre>
+        <hr />
+        <strong>TRANSFORMED DATA:</strong>
+        <pre>{JSON.stringify(heroSlides?.[0], null, 2)}</pre>
+      </div>
+      
       <HeroSlider slides={heroSlides} showDevWarning={isStrapiDown} />
       <IndustriesSection
         title={industriesData.title}
