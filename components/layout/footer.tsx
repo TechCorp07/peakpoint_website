@@ -26,10 +26,8 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
     secondaryPhone: "+1 XXX XXX XXXX (US)",
     officeLocation: "Nairobi, Kenya",
     regionLocation: "East Africa",
-    businessHours: "Mon-Fri: 8AM - 12AM Midnight CAT",
-    supportAvailability: "24/7 Support Available",
   }
-
+  
   const industries = footerNav?.industries || [
     {
       name: "Healthcare",
@@ -113,14 +111,6 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
                 <p className="text-sm">{contactInfo.officeLocation}</p>
                 {contactInfo.regionLocation && <p className="text-sm">{contactInfo.regionLocation}</p>}
               </div>
-
-              {(contactInfo.businessHours || contactInfo.supportAvailability) && (
-                <div>
-                  <p className="font-semibold mb-1">Business Hours</p>
-                  {contactInfo.supportAvailability && <p className="text-sm">{contactInfo.supportAvailability}</p>}
-                  {contactInfo.businessHours && <p className="text-sm">{contactInfo.businessHours}</p>}
-                </div>
-              )}
             </div>
 
             <div className="flex gap-4">
