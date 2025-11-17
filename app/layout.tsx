@@ -18,16 +18,21 @@ const defaultSiteSettings = {
 const defaultFooterSettings = {
   currentYear: new Date().getFullYear(),
   socialLinks: {
-    linkedin: "#",
-    facebook: "#",
-    twitter: "#",
-    youtube: "#",
-    whatsapp: "#",
+    linkedin: "https://linkedin.com/company/peakpoint",
+    facebook: "https://facebook.com/peakpoint",
+    twitter: "https://twitter.com/peakpoint",
+    youtube: "https://youtube.com/@peakpoint",
+    whatsapp: "https://wa.me/254XXXXXXXXX",
   },
   contactInfo: {
-    email: "info@peakpoint.africa",
-    phone: "+254 XXX XXX XXX",
-    address: "Nairobi, Kenya",
+    primaryEmail: "info@peakpoint.africa",
+    secondaryEmail: "sales@peakpoint.africa",
+    primaryPhone: "+254 XXX XXX XXX",
+    secondaryPhone: "+1 XXX XXX XXXX (US)",
+    officeLocation: "Nairobi, Kenya",
+    regionLocation: "East Africa",
+    businessHours: "Mon-Fri: 8AM - 6PM EAT",
+    supportAvailability: "24/7 Support Available",
   }
 }
 

@@ -26,6 +26,8 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
     secondaryPhone: "+1 XXX XXX XXXX (US)",
     officeLocation: "Nairobi, Kenya",
     regionLocation: "East Africa",
+    businessHours: "Mon-Fri: 8AM - 12AM Midnight CAT",
+    supportAvailability: "24/7 Support Available",
   }
 
   const industries = footerNav?.industries || [
@@ -84,31 +86,25 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
             <div className="space-y-4 mb-6">
               <div>
                 <p className="font-semibold mb-1">Email</p>
-                <a href={`mailto:${contactInfo.primaryEmail}`} className="text-sm hover:text-accent">
+                <a href={`mailto:${contactInfo.primaryEmail}`} className="text-sm hover:text-accent block">
                   {contactInfo.primaryEmail}
                 </a>
                 {contactInfo.secondaryEmail && (
-                  <>
-                    <br />
-                    <a href={`mailto:${contactInfo.secondaryEmail}`} className="text-sm hover:text-accent">
-                      {contactInfo.secondaryEmail}
-                    </a>
-                  </>
+                  <a href={`mailto:${contactInfo.secondaryEmail}`} className="text-sm hover:text-accent block mt-1">
+                    {contactInfo.secondaryEmail}
+                  </a>
                 )}
               </div>
 
               <div>
                 <p className="font-semibold mb-1">Phone</p>
-                <a href={`tel:${contactInfo.primaryPhone}`} className="text-sm hover:text-accent">
+                <a href={`tel:${contactInfo.primaryPhone}`} className="text-sm hover:text-accent block">
                   {contactInfo.primaryPhone}
                 </a>
                 {contactInfo.secondaryPhone && (
-                  <>
-                    <br />
-                    <a href={`tel:${contactInfo.secondaryPhone}`} className="text-sm hover:text-accent">
-                      {contactInfo.secondaryPhone}
-                    </a>
-                  </>
+                  <a href={`tel:${contactInfo.secondaryPhone}`} className="text-sm hover:text-accent block mt-1">
+                    {contactInfo.secondaryPhone}
+                  </a>
                 )}
               </div>
 
@@ -117,6 +113,14 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
                 <p className="text-sm">{contactInfo.officeLocation}</p>
                 {contactInfo.regionLocation && <p className="text-sm">{contactInfo.regionLocation}</p>}
               </div>
+
+              {(contactInfo.businessHours || contactInfo.supportAvailability) && (
+                <div>
+                  <p className="font-semibold mb-1">Business Hours</p>
+                  {contactInfo.supportAvailability && <p className="text-sm">{contactInfo.supportAvailability}</p>}
+                  {contactInfo.businessHours && <p className="text-sm">{contactInfo.businessHours}</p>}
+                </div>
+              )}
             </div>
 
             <div className="flex gap-4">
