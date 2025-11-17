@@ -45,14 +45,14 @@ async function getPartnersSection() {
   }
 }
 
-async function getCaseStudies() {
-  try {
-    const data = await strapi.getCaseStudies()
-    return data?.data || null
-  } catch (error) {
-    return null
+  async function getCaseStudies() {
+    try {
+      const data = await strapi.getCaseStudies()
+      return data || null
+    } catch (error) {
+      return null
+    }
   }
-}
 
 export default async function HomePage() {
   const [homepageContent, benefitsSection, metricsSection, partnersSection, caseStudiesData] = await Promise.all([
@@ -79,29 +79,55 @@ export default async function HomePage() {
     order: slide.order || 0,
   })) || undefined
 
-  const testimonialsCaseStudies = caseStudiesData?.slice(0, 3).map((study: any) => ({
-    id: study.id,
-    title: study.attributes?.title || "",
-    client: study.attributes?.client || "",
-    industry: study.attributes?.industry || "",
-    description: study.attributes?.description || "",
-    videoUrl: study.attributes?.videoUrl,
-    image: study.attributes?.image?.data?.attributes?.url || "/placeholder.svg",
-    metrics: study.attributes?.metrics || [],
-    logo: study.attributes?.logo?.data?.attributes?.url || "/placeholder.svg",
-    slug: study.attributes?.slug || "",
-  }))
+  const testimonialsCaseStudies = caseStudiesData?.slice(0, 3).map((study: any) => {
+    // Handle both flat and nested Strapi response structures
+    const attrs = study.attributes || study;
+    
+    return {
+      id: study.id || study.documentId,
+      title: attrs.title || "",
+      client: attrs.client || "",
+      industry: attrs.industry || "",
+      description: attrs.description || attrs.solution || "", // Fallback to solution if no description
+      videoUrl: attrs.videoUrl || undefined,
+      image: attrs.image?.url 
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.url}`
+        : attrs.image?.data?.attributes?.url 
+          ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.data.attributes.url}`
+          : "/placeholder.svg",
+      metrics: Array.isArray(attrs.metrics) && attrs.metrics.length > 0
+        ? attrs.metrics 
+        : [],
+      logo: attrs.logo?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.logo.url}`
+        : attrs.logo?.data?.attributes?.url
+          ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.logo.data.attributes.url}`
+          : "/placeholder.svg",
+      slug: attrs.slug || "",
+    };
+  });
 
-  const caseStudiesSectionData = caseStudiesData?.slice(0, 2).map((study: any) => ({
-    id: study.id,
-    title: study.attributes?.title || "",
-    client: study.attributes?.client || "",
-    industry: study.attributes?.industry || "",
-    challenge: study.attributes?.challenge || "",
-    result: study.attributes?.result || "",
-    metrics: study.attributes?.metrics || [],
-    image: study.attributes?.image?.data?.attributes?.url || "/placeholder.svg",
-  }))
+  const caseStudiesSectionData = caseStudiesData?.slice(0, 2).map((study: any) => {
+    // Handle both flat and nested Strapi response structures
+    const attrs = study.attributes || study;
+    
+    return {
+      id: study.id || study.documentId,
+      title: attrs.title || "",
+      client: attrs.client || "",
+      industry: attrs.industry || "",
+      challenge: attrs.challenge || "",
+      result: attrs.solution || "", // Using solution as result
+      metrics: Array.isArray(attrs.metrics) && attrs.metrics.length > 0
+        ? attrs.metrics 
+        : [],
+      image: attrs.image?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.url}`
+        : attrs.image?.data?.attributes?.url
+          ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.data.attributes.url}`
+          : "/placeholder.svg",
+    };
+  });
 
   return (
     <>
