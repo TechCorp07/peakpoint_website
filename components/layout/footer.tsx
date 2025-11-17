@@ -18,13 +18,17 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
     youtube: "#",
     whatsapp: "#",
   }
+
   const contactInfo = footerSettings?.contactInfo || {
-    email: "info@peakpoint.africa",
-    phone: "+254 XXX XXX XXX",
-    address: "Nairobi, Kenya",
+    primaryEmail: "info@peakpoint.africa",
+    secondaryEmail: "sales@peakpoint.africa",
+    primaryPhone: "+254 XXX XXX XXX",
+    secondaryPhone: "+1 XXX XXX XXXX (US)",
+    officeLocation: "Nairobi, Kenya",
+    regionLocation: "East Africa",
   }
 
-  const industries = footerNav?.attributes?.industries || [
+  const industries = footerNav?.industries || [
     {
       name: "Healthcare",
       services: [
@@ -60,8 +64,8 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
     },
   ]
 
-  const companyTagline = footerNav?.attributes?.companyTagline || "Outsource smarter, Operate leaner, Grow faster."
-  const copyrightText = footerNav?.attributes?.copyrightText || "Peak Point Africa. All rights reserved."
+  const companyTagline = footerNav?.companyTagline || "Outsource smarter, Operate leaner, Grow faster."
+  const copyrightText = footerNav?.copyrightText || "Peak Point Africa. All rights reserved."
 
   const logo = siteSettings?.logo?.data?.attributes?.url || "/logo.png"
   const siteName = siteSettings?.siteName || "Peak Point Services"
@@ -76,6 +80,45 @@ export function Footer({ siteSettings, footerSettings, footerNav }: FooterProps)
               <Image src={logo} alt={siteName} width={180} height={45} className="h-9 w-auto" />
             </Link>
             <p className="text-foreground/70 text-sm leading-relaxed mb-6">{companyTagline}</p>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <p className="font-semibold mb-1">Email</p>
+                <a href={`mailto:${contactInfo.primaryEmail}`} className="text-sm hover:text-accent">
+                  {contactInfo.primaryEmail}
+                </a>
+                {contactInfo.secondaryEmail && (
+                  <>
+                    <br />
+                    <a href={`mailto:${contactInfo.secondaryEmail}`} className="text-sm hover:text-accent">
+                      {contactInfo.secondaryEmail}
+                    </a>
+                  </>
+                )}
+              </div>
+
+              <div>
+                <p className="font-semibold mb-1">Phone</p>
+                <a href={`tel:${contactInfo.primaryPhone}`} className="text-sm hover:text-accent">
+                  {contactInfo.primaryPhone}
+                </a>
+                {contactInfo.secondaryPhone && (
+                  <>
+                    <br />
+                    <a href={`tel:${contactInfo.secondaryPhone}`} className="text-sm hover:text-accent">
+                      {contactInfo.secondaryPhone}
+                    </a>
+                  </>
+                )}
+              </div>
+
+              <div>
+                <p className="font-semibold mb-1">Office</p>
+                <p className="text-sm">{contactInfo.officeLocation}</p>
+                {contactInfo.regionLocation && <p className="text-sm">{contactInfo.regionLocation}</p>}
+              </div>
+            </div>
+
             <div className="flex gap-4">
               <Link
                 href={socialLinks.linkedin}

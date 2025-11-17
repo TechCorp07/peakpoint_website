@@ -199,13 +199,14 @@ class StrapiClient {
 
   // Footer Settings
   getFooterSettings = cache(async () => {
-    return this.fetch<StrapiResponse<any>>("/footer-setting?populate=*")
+    return this.fetch<StrapiResponse<any>>("/footer-setting?populate[socialLinks]=*&populate[contactInfo]=*")
   })
 
   // Footer Navigation (single type)
   getFooterNavigation = cache(async () => {
-    return this.fetch<StrapiResponse<any>>("/footer-navigation?populate=*")
-  })
+    return this.fetch<StrapiResponse<any>>(
+      "/footer-navigation?populate[industries][populate]=services"
+    )})
 
   // Site Settings
   getSiteSettings = cache(async () => {
