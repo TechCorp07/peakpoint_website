@@ -3,7 +3,6 @@
 import type React from "react"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Heart, GraduationCap, Building2, Smartphone, ChevronRight } from "lucide-react"
 
 interface SubService {
   name: string
@@ -18,11 +17,35 @@ interface Industry {
   subServices: SubService[]
 }
 
+import { 
+  Heart, 
+  GraduationCap, 
+  Building2, 
+  Smartphone, 
+  ChevronRight,
+  Briefcase,
+  Cpu,
+  Database,
+  Globe,
+  Shield,
+  Truck,
+  Factory,
+  Store
+} from "lucide-react"
+
 const iconMap: Record<string, React.ReactNode> = {
   heart: <Heart className="w-10 h-10" />,
   "graduation-cap": <GraduationCap className="w-10 h-10" />,
   building: <Building2 className="w-10 h-10" />,
   smartphone: <Smartphone className="w-10 h-10" />,
+  briefcase: <Briefcase className="w-10 h-10" />,
+  cpu: <Cpu className="w-10 h-10" />,
+  database: <Database className="w-10 h-10" />,
+  globe: <Globe className="w-10 h-10" />,
+  shield: <Shield className="w-10 h-10" />,
+  truck: <Truck className="w-10 h-10" />,
+  factory: <Factory className="w-10 h-10" />,
+  store: <Store className="w-10 h-10" />,
 }
 
 const defaultIndustries: Industry[] = [
@@ -116,11 +139,10 @@ export function IndustriesSection({
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
               onClick={() => setSelectedIndustry(selectedIndustry === industry.id ? null : industry.id)}
-              className={`group relative p-8 transition-all duration-300 rounded-2xl ${
-                selectedIndustry === industry.id
+              className={`group relative p-8 transition-all duration-300 rounded-2xl ${selectedIndustry === industry.id
                   ? "bg-gradient-to-br from-primary to-primary/90 shadow-2xl shadow-primary/20 scale-105"
                   : "bg-card hover:bg-gradient-to-br hover:from-blue-50 hover:to-green-50/30 shadow-lg hover:shadow-xl border border-border"
-              }`}
+                }`}
             >
               <div
                 className={`mb-4 transition-colors ${selectedIndustry === industry.id ? "text-accent-alt" : "text-accent-alt group-hover:text-accent"}`}
@@ -160,18 +182,24 @@ export function IndustriesSection({
                   <div key={industry.id} className="bg-card border border-border rounded-2xl p-8 shadow-xl">
                     <h3 className="text-2xl font-bold text-primary mb-6">{industry.name} Services</h3>
                     <div className="grid md:grid-cols-2 gap-6">
-                      {industry.subServices.map((service) => (
-                        <div
-                          key={service.name}
-                          className="p-6 rounded-xl bg-gradient-to-br from-blue-50/50 to-green-50/30 border border-border hover:shadow-lg transition-shadow"
-                        >
-                          <h4 className="font-semibold text-primary mb-2 flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-accent-alt" />
-                            {service.name}
-                          </h4>
-                          <p className="text-sm text-muted-foreground leading-relaxed">{service.description}</p>
+                      {industry.subServices && Array.isArray(industry.subServices) && industry.subServices.length > 0 ? (
+                        industry.subServices.map((service) => (
+                          <div
+                            key={service.name}
+                            className="p-6 rounded-xl bg-gradient-to-br from-blue-50/50 to-green-50/30 border border-border hover:shadow-lg transition-shadow"
+                          >
+                            <h4 className="font-semibold text-primary mb-2 flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full bg-accent-alt" />
+                              {service.name}
+                            </h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{service.description}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-span-2 text-center py-8">
+                          <p className="text-muted-foreground">No services available for this industry yet.</p>
                         </div>
-                      ))}
+                      )}
                     </div>
                   </div>
                 ))}

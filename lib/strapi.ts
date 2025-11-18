@@ -214,10 +214,10 @@ class StrapiClient {
   })
 
   // Homepage Content (single type)
-async getHomepageContent() {
-  return this.fetch<StrapiResponse<any>>(
-    "/homepage-content?populate[heroSlides][populate]=backgroundImage&populate[industriesSection][populate]=*&populate[benefitsSection][populate]=*"
-  )}
+  async getHomepageContent() {
+    return this.fetch<StrapiResponse<any>>(
+      "/homepage-content?populate[heroSlides][populate]=backgroundImage&populate[industriesSection][populate][industries][populate]=subServices&populate[benefitsSection][populate]=*"
+    )}
 
   // About Page (single type)
   async getAboutPage() {
