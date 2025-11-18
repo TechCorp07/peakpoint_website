@@ -18,15 +18,6 @@ async function getHomepageContent() {
   }
 }
 
-async function getBenefitsSection() {
-  try {
-    const data = await strapi.getBenefitsSection()
-    return data?.data || null
-  } catch (error) {
-    return null
-  }
-}
-
 async function getMetricsSection() {
   try {
     const data = await strapi.getMetricsSection()
@@ -45,27 +36,41 @@ async function getPartnersSection() {
   }
 }
 
-  async function getCaseStudies() {
-    try {
-      const data = await strapi.getCaseStudies()
-      return data || null
-    } catch (error) {
-      return null
-    }
+async function getCaseStudies() {
+  try {
+    const data = await strapi.getCaseStudies()
+    return data || null
+  } catch (error) {
+    return null
   }
+}
 
 export default async function HomePage() {
-  const [homepageContent, benefitsSection, metricsSection, partnersSection, caseStudiesData] = await Promise.all([
+  const [homepageContent, metricsSection, partnersSection, caseStudiesData] = await Promise.all([
     getHomepageContent(),
-    getBenefitsSection(),
     getMetricsSection(),
     getPartnersSection(),
     getCaseStudies(),
   ])
-  
+
   const isStrapiDown = !homepageContent
 
   const industriesData = homepageContent?.industriesSection || {}
+
+  const benefitsSectionData = homepageContent?.benefitsSection || {}
+  
+  const transformedBenefits = benefitsSectionData?.benefits?.map((benefit: any) => ({
+    id: benefit.id,
+    title: benefit.title || "",
+    description: benefit.description || "",
+    impact: benefit.impact || "",
+    image: benefit.image?.url
+      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${benefit.image.url}`
+      : benefit.image?.data?.attributes?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${benefit.image.data.attributes.url}`
+        : "/placeholder.svg",
+    link: benefit.link || "#"
+  })) || []
 
   const heroSlides = homepageContent?.heroSlides?.map((slide: any) => ({
     id: slide.id,
@@ -73,7 +78,7 @@ export default async function HomePage() {
     description: slide.description || "",
     ctaText: slide.ctaText || "Learn More",
     ctaLink: slide.ctaLink || "/",
-    backgroundImage: slide.backgroundImage?.url 
+    backgroundImage: slide.backgroundImage?.url
       ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${slide.backgroundImage.url}`
       : "/placeholder.svg",
     order: slide.order || 0,
@@ -82,7 +87,7 @@ export default async function HomePage() {
   const testimonialsCaseStudies = caseStudiesData?.slice(0, 3).map((study: any) => {
     // Handle both flat and nested Strapi response structures
     const attrs = study.attributes || study;
-    
+
     return {
       id: study.id || study.documentId,
       title: attrs.title || "",
@@ -90,13 +95,13 @@ export default async function HomePage() {
       industry: attrs.industry || "",
       description: attrs.description || attrs.solution || "", // Fallback to solution if no description
       videoUrl: attrs.videoUrl || undefined,
-      image: attrs.image?.url 
+      image: attrs.image?.url
         ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.url}`
-        : attrs.image?.data?.attributes?.url 
+        : attrs.image?.data?.attributes?.url
           ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.data.attributes.url}`
           : "/placeholder.svg",
       metrics: Array.isArray(attrs.metrics) && attrs.metrics.length > 0
-        ? attrs.metrics 
+        ? attrs.metrics
         : [],
       logo: attrs.logo?.url
         ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.logo.url}`
@@ -110,7 +115,7 @@ export default async function HomePage() {
   const caseStudiesSectionData = caseStudiesData?.slice(0, 2).map((study: any) => {
     // Handle both flat and nested Strapi response structures
     const attrs = study.attributes || study;
-    
+
     return {
       id: study.id || study.documentId,
       title: attrs.title || "",
@@ -119,7 +124,7 @@ export default async function HomePage() {
       challenge: attrs.challenge || "",
       result: attrs.solution || "", // Using solution as result
       metrics: Array.isArray(attrs.metrics) && attrs.metrics.length > 0
-        ? attrs.metrics 
+        ? attrs.metrics
         : [],
       image: attrs.image?.url
         ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.image.url}`
@@ -139,10 +144,10 @@ export default async function HomePage() {
         showDevWarning={isStrapiDown}
       />
       <BenefitsCarousel
-        benefits={benefitsSection?.benefits}
-        sectionTitle={benefitsSection?.sectionTitle}
-        sectionSubtitle={benefitsSection?.sectionSubtitle}
-        showDevWarning={!benefitsSection}
+        benefits={transformedBenefits}
+        sectionTitle={benefitsSectionData?.title}
+        sectionSubtitle={benefitsSectionData?.subtitle}
+        showDevWarning={!benefitsSectionData}
       />
       <TestimonialsSection caseStudies={testimonialsCaseStudies} />
       <MetricsSection
