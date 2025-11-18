@@ -157,7 +157,7 @@ export function TestimonialsSection({ caseStudies = defaultCaseStudies }: Testim
 
                 {/* CTA */}
                 <Link
-                  href={`/insights/case-studies/${study.slug}`}
+                  href={`/case-studies/${study.slug}`}
                   className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-accent transition-colors group/link"
                 >
                   Read Full Story
