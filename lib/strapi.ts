@@ -233,6 +233,22 @@ class StrapiClient {
     return this.fetch<StrapiResponse<any>>(`/cta-buttons?filters[key][$eq]=${key}`)
   }
 
+  // Partner Stories
+  async getPartnerStories() {
+    const res = await this.fetch<StrapiResponse<any[]>>("/partner-stories?populate=*")
+    if (!res || !Array.isArray(res.data)) {
+      console.warn("Unexpected partner stories response from Strapi:", res)
+      return null
+    }
+    return res.data
+  }
+
+  async getPartnerStory(slug: string) {
+    return this.fetch<StrapiResponse<any>>(
+      `/partner-stories?filters[slug][$eq]=${slug}&populate[partnerLogo][populate]=*&populate[featuredImage][populate]=*&populate[metrics][populate]=*`
+    )
+  }
+
   // Case Studies
   async getCaseStudies() {
     const res = await this.fetch<StrapiResponse<any[]>>("/case-studies?populate=*")

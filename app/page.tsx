@@ -6,6 +6,7 @@ import { MetricsSection } from "@/components/home/metrics-section"
 import { PartnersScroll } from "@/components/home/partners-scroll"
 import { CaseStudiesSection } from "@/components/home/case-studies-section"
 import { AIAssistant } from "@/components/ai-assistant/chat-widget"
+import { PartnerStoriesSection } from "@/components/home/partner-stories-section"
 import { strapi } from "@/lib/strapi"
 
 async function getHomepageContent() {
@@ -45,12 +46,22 @@ async function getCaseStudies() {
   }
 }
 
+async function getPartnerStories() {
+  try {
+    const data = await strapi.getPartnerStories()
+    return data || null
+  } catch (error) {
+    return null
+  }
+}
+
 export default async function HomePage() {
-  const [homepageContent, metricsSection, partnersSection, caseStudiesData] = await Promise.all([
+  const [homepageContent, metricsSection, partnersSection, caseStudiesData, partnerStoriesData] = await Promise.all([
     getHomepageContent(),
     getMetricsSection(),
     getPartnersSection(),
     getCaseStudies(),
+    getPartnerStories(),
   ])
 
   const isStrapiDown = !homepageContent
@@ -83,6 +94,26 @@ export default async function HomePage() {
       : "/placeholder.svg",
     order: slide.order || 0,
   })) || undefined
+
+  
+  const transformedPartnerStories = partnerStoriesData?.map((story: any) => {
+    const storyData = story.attributes || story
+    return {
+      id: story.id,
+      title: storyData.title || "",
+      partnerName: storyData.partnerName || "",
+      partnerType: storyData.partnerType || "",
+      description: storyData.description || "",
+      featuredImage: storyData.featuredImage?.data?.attributes?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${storyData.featuredImage.data.attributes.url}`
+        : storyData.featuredImage || "/placeholder.svg",
+      partnerLogo: storyData.partnerLogo?.data?.attributes?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${storyData.partnerLogo.data.attributes.url}`
+        : storyData.partnerLogo || "/placeholder.svg",
+      metrics: storyData.metrics || [],
+      slug: storyData.slug || "",
+    }
+  }) || []
 
   const testimonialsCaseStudies = caseStudiesData?.slice(0, 3).map((study: any) => {
     // Handle both flat and nested Strapi response structures
@@ -149,7 +180,10 @@ export default async function HomePage() {
         sectionSubtitle={benefitsSectionData?.subtitle}
         showDevWarning={!benefitsSectionData}
       />
+      
       <TestimonialsSection caseStudies={testimonialsCaseStudies} />
+      <PartnerStoriesSection partnerStories={transformedPartnerStories} />
+
       <MetricsSection
         metrics={metricsSection?.metrics}
         sectionTitle={metricsSection?.sectionTitle}

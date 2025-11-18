@@ -37,6 +37,7 @@ function HeaderClient({ logo = "/logo.png", siteName = "Peak Point Services" }: 
     { href: "/insights/blog", label: "Blog" },
     { href: "/insights/news", label: "News" },
     { href: "/case-studies", label: "Case Studies" },
+    { href: "/partner-stories", label: "Partner Stories" },
     { href: "/insights/community", label: "Community & Teamwork" },
   ]
 
