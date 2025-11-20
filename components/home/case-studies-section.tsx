@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -53,7 +53,7 @@ const defaultCaseStudies: CaseStudy[] = [
 
 export function CaseStudiesSection({ caseStudies = defaultCaseStudies }: CaseStudiesSectionProps) {
   return (
-    <section className="py-24 bg-slate-200">
+    <section className="pt-24 pb-12 bg-slate-200">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -62,8 +62,8 @@ export function CaseStudiesSection({ caseStudies = defaultCaseStudies }: CaseStu
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Our Partners Stories</h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">Real results from real partnerships</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Trusted by Industry Leaders</h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">We are proud to power the operations of forward-thinking organizations, delivering the security, compliance, and expertise they need to thrive</p>
         </motion.div>
 
         <div className="space-y-12">
@@ -115,6 +115,22 @@ export function CaseStudiesSection({ caseStudies = defaultCaseStudies }: CaseStu
             </motion.div>
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-center mt-12"
+        >
+          <Link
+            href="/partner-stories"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors shadow-lg"
+          >
+            View All Partner Stories
+            <ExternalLink className="w-5 h-5" />
+          </Link>
+        </motion.div>
+
       </div>
     </section>
   )

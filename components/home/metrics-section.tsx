@@ -76,7 +76,7 @@ export function MetricsSection({
   showDevWarning = false,
 }: MetricsSectionProps) {
   return (
-    <section className="py-24 bg-gradient-to-b from-secondary via-blue-50/30 to-muted relative">
+    <section className="pt-12 pb-24 bg-gradient-to-b from-secondary via-blue-50/30 to-muted relative">
 
       <div className="container mx-auto px-4">
         <motion.div
