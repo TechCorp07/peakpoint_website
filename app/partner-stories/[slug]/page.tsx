@@ -7,9 +7,9 @@ import { notFound } from "next/navigation"
 import { ExternalLink, Calendar } from "lucide-react"
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 async function getPartnerStory(slug: string) {
@@ -26,7 +26,9 @@ async function getPartnerStory(slug: string) {
 }
 
 export default async function PartnerStoryDetailPage({ params }: PageProps) {
-  const partnerStory = await getPartnerStory(params.slug)
+  // Next.js 15: Await params before accessing properties
+  const resolvedParams = await params
+  const partnerStory = await getPartnerStory(resolvedParams.slug)
 
   if (!partnerStory) {
     notFound()
@@ -60,8 +62,12 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
       {/* Hero Section */}
       <section className="relative bg-primary py-24 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src={featuredImageUrl} alt={story.title} fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/95 to-primary/90" />
+          {featuredImageUrl && featuredImageUrl !== "/placeholder.svg" && (
+            <>
+              <Image src={featuredImageUrl} alt={story.title} fill className="object-cover" priority />
+              <div className="absolute inset-0 bg-gradient-to-b from-primary/95 to-primary/90" />
+            </>
+          )}
         </div>
         <div className="relative container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl">
@@ -73,9 +79,17 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
             </Link>
 
             {/* Partner Logo */}
-            <div className="mb-6 h-16 flex items-center">
-              <Image src={logoUrl} alt={story.partnerName} width={200} height={64} className="object-contain" />
-            </div>
+            {logoUrl && logoUrl !== "/placeholder.svg" && (
+              <div className="mb-6 h-16 flex items-center">
+                <Image 
+                  src={logoUrl} 
+                  alt={story.partnerName} 
+                  width={200} 
+                  height={64} 
+                  className="object-contain" 
+                />
+              </div>
+            )}
 
             <div className="flex items-center gap-4 mb-4">
               <span className="px-3 py-1 bg-accent/90 backdrop-blur-sm text-primary text-sm font-semibold rounded-full">
@@ -120,7 +134,7 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
             <div>
               <h2 className="text-3xl font-bold text-foreground mb-6">The Challenge</h2>
               <div
-                className="prose prose-lg max-w-none text-muted-foreground"
+                className="prose prose-lg max-w-none text-muted-foreground [&_strong]:font-bold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2"
                 dangerouslySetInnerHTML={{ __html: challengeHtml }}
               />
             </div>
@@ -129,7 +143,7 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
             <div className="bg-gradient-to-br from-secondary/50 to-secondary/30 rounded-2xl p-8 md:p-12">
               <h2 className="text-3xl font-bold text-foreground mb-6">Our Collaboration</h2>
               <div
-                className="prose prose-lg max-w-none text-muted-foreground"
+                className="prose prose-lg max-w-none text-muted-foreground [&_strong]:font-bold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2"
                 dangerouslySetInnerHTML={{ __html: collaborationHtml }}
               />
             </div>
@@ -138,7 +152,7 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
             <div>
               <h2 className="text-3xl font-bold text-foreground mb-6">The Impact</h2>
               <div
-                className="prose prose-lg max-w-none text-muted-foreground"
+                className="prose prose-lg max-w-none text-muted-foreground [&_strong]:font-bold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2"
                 dangerouslySetInnerHTML={{ __html: impactHtml }}
               />
             </div>
