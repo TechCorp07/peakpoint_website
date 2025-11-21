@@ -25,6 +25,7 @@
     "framer-motion": "latest",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.454.0",
+    "marked": "^17.0.1",
     "next": "^15.1.6",
     "next-auth": "^4.24.13",
     "nodemailer": "^7.0.10",

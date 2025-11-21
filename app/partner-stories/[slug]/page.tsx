@@ -1,4 +1,5 @@
 import { strapi } from "@/lib/strapi"
+import { parseMarkdown } from "@/lib/markdown-utils"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -48,6 +49,11 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
         month: "long",
       })
     : null
+
+  // Parse markdown to HTML for rich text fields
+  const challengeHtml = parseMarkdown(story.challenge)
+  const collaborationHtml = parseMarkdown(story.collaboration)
+  const impactHtml = parseMarkdown(story.impact)
 
   return (
     <main className="pt-20 min-h-screen">
@@ -115,7 +121,7 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
               <h2 className="text-3xl font-bold text-foreground mb-6">The Challenge</h2>
               <div
                 className="prose prose-lg max-w-none text-muted-foreground"
-                dangerouslySetInnerHTML={{ __html: story.challenge }}
+                dangerouslySetInnerHTML={{ __html: challengeHtml }}
               />
             </div>
 
@@ -124,7 +130,7 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
               <h2 className="text-3xl font-bold text-foreground mb-6">Our Collaboration</h2>
               <div
                 className="prose prose-lg max-w-none text-muted-foreground"
-                dangerouslySetInnerHTML={{ __html: story.collaboration }}
+                dangerouslySetInnerHTML={{ __html: collaborationHtml }}
               />
             </div>
 
@@ -133,7 +139,7 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
               <h2 className="text-3xl font-bold text-foreground mb-6">The Impact</h2>
               <div
                 className="prose prose-lg max-w-none text-muted-foreground"
-                dangerouslySetInnerHTML={{ __html: story.impact }}
+                dangerouslySetInnerHTML={{ __html: impactHtml }}
               />
             </div>
 
