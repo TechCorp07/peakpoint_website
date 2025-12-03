@@ -56,18 +56,18 @@ async function getPartnerStories() {
 
 export default async function HomePage() {
   const [homepageContent, metricsSection, partnersSection, caseStudiesData] = await Promise.all([
-     getHomepageContent(),
-     getMetricsSection(),
-     getPartnersSection(),
-     getCaseStudies(),
-   ])
-   
+    getHomepageContent(),
+    getMetricsSection(),
+    getPartnersSection(),
+    getCaseStudies(),
+  ])
+
   const isStrapiDown = !homepageContent
 
   const industriesData = homepageContent?.industriesSection || {}
 
   const benefitsSectionData = homepageContent?.benefitsSection || {}
-  
+
   const transformedBenefits = benefitsSectionData?.benefits?.map((benefit: any) => ({
     id: benefit.id,
     title: benefit.title || "",
@@ -92,6 +92,17 @@ export default async function HomePage() {
       : "/placeholder.svg",
     order: slide.order || 0,
   })) || undefined
+
+  const transformedPartners = partnersSection?.partners?.map((partner: any) => ({
+    id: partner.id,
+    name: partner.name || "",
+    logo: partner.logo?.url
+      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${partner.logo.url}`
+      : partner.logo?.data?.attributes?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${partner.logo.data.attributes.url}`
+        : "/placeholder.svg",
+    website: partner.website || ""
+  })) || []
 
   const testimonialsCaseStudies = caseStudiesData?.slice(0, 3).map((study: any) => {
     // Handle both flat and nested Strapi response structures
@@ -158,7 +169,7 @@ export default async function HomePage() {
         sectionSubtitle={benefitsSectionData?.subtitle}
         showDevWarning={!benefitsSectionData}
       />
-      
+
       <TestimonialsSection caseStudies={testimonialsCaseStudies} />
 
       <MetricsSection
@@ -168,7 +179,7 @@ export default async function HomePage() {
         showDevWarning={!metricsSection}
       />
       <PartnersScroll
-        partners={partnersSection?.partners}
+        partners={transformedPartners}
         sectionTitle={partnersSection?.sectionTitle}
         showDevWarning={!partnersSection}
       />

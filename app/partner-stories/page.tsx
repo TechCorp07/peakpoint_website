@@ -68,7 +68,32 @@ export default async function PartnerStoriesPage() {
   ]
 
   const isStrapiDown = !Array.isArray(partnerStoriesData)
-  const partnerStories = isStrapiDown ? defaultPartnerStories : partnerStoriesData
+
+  // Transform Strapi data to include proper image URLs
+  const transformedPartnerStories = partnerStoriesData?.map((story: any) => {
+    const attrs = story.attributes || story
+
+    return {
+      slug: attrs.slug || "",
+      title: attrs.title || "",
+      partnerName: attrs.partnerName || "",
+      partnerType: attrs.partnerType || "",
+      description: attrs.description || "",
+      featuredImage: attrs.featuredImage?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.featuredImage.url}`
+        : attrs.featuredImage?.data?.attributes?.url
+          ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.featuredImage.data.attributes.url}`
+          : "/placeholder.svg",
+      partnerLogo: attrs.partnerLogo?.url
+        ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.partnerLogo.url}`
+        : attrs.partnerLogo?.data?.attributes?.url
+          ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${attrs.partnerLogo.data.attributes.url}`
+          : "/placeholder.svg",
+      metrics: attrs.metrics || [],
+    }
+  }) || []
+
+  const partnerStories = isStrapiDown ? defaultPartnerStories : transformedPartnerStories
 
   return (
     <main className="pt-20 min-h-screen">
@@ -111,74 +136,63 @@ export default async function PartnerStoriesPage() {
             </div>
           ) : (
             <div className="grid md:grid-cols-1 gap-16 max-w-6xl mx-auto">
-              {partnerStories.map((story: any, index: number) => {
-                const storyData = story.attributes || story
-                const featuredImageUrl = storyData.featuredImage?.data?.attributes?.url
-                  ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${storyData.featuredImage.data.attributes.url}`
-                  : storyData.featuredImage || "/placeholder.svg"
-
-                const logoUrl = storyData.partnerLogo?.data?.attributes?.url
-                  ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${storyData.partnerLogo.data.attributes.url}`
-                  : storyData.partnerLogo || "/placeholder.svg"
-
-                return (
-                  <div
-                    key={index}
-                    className="bg-card rounded-2xl overflow-hidden border border-border hover:border-accent/50 hover:shadow-xl transition-all"
-                  >
-                    <div className="grid md:grid-cols-2 gap-8">
-                      {/* Image */}
-                      <div className="relative h-64 md:h-auto">
-                        <Image
-                          src={featuredImageUrl}
-                          alt={storyData.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute top-4 left-4">
-                          <span className="px-3 py-1 bg-accent/90 backdrop-blur-sm text-primary text-xs font-semibold rounded-full">
-                            {storyData.partnerType}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-8">
-                        {/* Partner Logo */}
-                        <div className="mb-4 h-12 flex items-center">
-                          <Image
-                            src={logoUrl}
-                            alt={storyData.partnerName}
-                            width={150}
-                            height={48}
-                            className="object-contain"
-                          />
-                        </div>
-
-                        <h2 className="text-3xl font-bold text-foreground mb-4">{storyData.title}</h2>
-                        <p className="text-muted-foreground mb-6">{storyData.description}</p>
-
-                        {/* Metrics */}
-                        <div className="grid grid-cols-3 gap-4 mb-6">
-                          {storyData.metrics?.map((metric: any, idx: number) => (
-                            <div key={idx} className="text-center">
-                              <div className="text-2xl font-bold text-accent mb-1">{metric.value}</div>
-                              <div className="text-xs text-muted-foreground">{metric.label}</div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Button */}
-                        <Button asChild className="bg-accent hover:bg-accent-hover text-white">
-                          <Link href={`/partner-stories/${storyData.slug}`}>
-                            Read Full Story →
-                          </Link>
-                        </Button>
+              {partnerStories.map((story: any, index: number) => (
+                <div
+                  key={index}
+                  className="bg-card rounded-2xl overflow-hidden border border-border hover:border-accent/50 hover:shadow-xl transition-all"
+                >
+                  <div className="grid md:grid-cols-2 gap-8">
+                    {/* Image */}
+                    <div className="relative h-64 md:h-auto">
+                      <Image
+                        src={story.featuredImage || "/placeholder.svg"}
+                        alt={story.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-accent/90 backdrop-blur-sm text-primary text-xs font-semibold rounded-full">
+                          {story.partnerType}
+                        </span>
                       </div>
                     </div>
+
+                    {/* Content */}
+                    <div className="p-8">
+                      {/* Partner Logo */}
+                      <div className="mb-4 h-12 flex items-center">
+                        <Image
+                          src={story.partnerLogo || "/placeholder.svg"}
+                          alt={story.partnerName}
+                          width={150}
+                          height={48}
+                          className="object-contain"
+                        />
+                      </div>
+
+                      <h2 className="text-3xl font-bold text-foreground mb-4">{story.title}</h2>
+                      <p className="text-muted-foreground mb-6">{story.description}</p>
+
+                      {/* Metrics */}
+                      <div className="grid grid-cols-3 gap-4 mb-6">
+                        {story.metrics?.map((metric: any, idx: number) => (
+                          <div key={idx} className="text-center">
+                            <div className="text-2xl font-bold text-accent mb-1">{metric.value}</div>
+                            <div className="text-xs text-muted-foreground">{metric.label}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Button */}
+                      <Button asChild className="bg-accent hover:bg-accent-hover text-white">
+                        <Link href={`/partner-stories/${story.slug}`}>
+                          Read Full Story <ExternalLink className="ml-2 w-4 h-4" />
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -189,7 +203,7 @@ export default async function PartnerStoriesPage() {
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-primary-foreground mb-6">Become Our Partner</h2>
           <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
-            Join our network of leading technology partners and certification bodies to drive innovation together.
+            Join our network of leading partners to drive innovation and create impact together.
           </p>
           <Button asChild size="lg" className="bg-accent hover:bg-accent-hover text-white">
             <Link href="/about/partnerships">Partner With Us →</Link>

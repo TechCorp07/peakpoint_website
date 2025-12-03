@@ -138,7 +138,7 @@ class StrapiClient {
 
   // Partners Section (single type)
   async getPartnersSection() {
-    return this.fetch<StrapiResponse<any>>("/partners-section?populate=*")
+    return this.fetch<StrapiResponse<any>>("/partners-section?populate[partners][populate]=logo")
   }
 
   // Partnerships Page (single type)
@@ -206,7 +206,8 @@ class StrapiClient {
   getFooterNavigation = cache(async () => {
     return this.fetch<StrapiResponse<any>>(
       "/footer-navigation?populate[industries][populate]=services"
-    )})
+    )
+  })
 
   // Site Settings
   getSiteSettings = cache(async () => {
@@ -217,7 +218,8 @@ class StrapiClient {
   async getHomepageContent() {
     return this.fetch<StrapiResponse<any>>(
       "/homepage-content?populate[heroSlides][populate]=backgroundImage&populate[industriesSection][populate][industries][populate]=subServices&populate[benefitsSection][populate][benefits][populate]=image"
-    )}
+    )
+  }
 
   // About Page (single type)
   async getAboutPage() {

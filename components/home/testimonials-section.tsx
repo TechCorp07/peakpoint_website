@@ -177,7 +177,7 @@ export function TestimonialsSection({ caseStudies = defaultCaseStudies }: Testim
           className="text-center mt-12"
         >
           <Link
-            href="/insights/case-studies"
+            href="/case-studies"
             className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-primary font-semibold rounded-lg hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20"
           >
             View All Case Studies

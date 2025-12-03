@@ -36,20 +36,26 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
 
   const story = partnerStory.attributes || partnerStory
 
+  // Handle featured image URL
   const featuredImageUrl = story.featuredImage?.data?.attributes?.url
     ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${story.featuredImage.data.attributes.url}`
-    : story.featuredImage || "/placeholder.svg"
+    : story.featuredImage?.url
+      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${story.featuredImage.url}`
+      : "/placeholder.svg"
 
+  // Handle partner logo URL
   const logoUrl = story.partnerLogo?.data?.attributes?.url
     ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${story.partnerLogo.data.attributes.url}`
-    : story.partnerLogo || "/placeholder.svg"
+    : story.partnerLogo?.url
+      ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${story.partnerLogo.url}`
+      : "/placeholder.svg"
 
   // Format date if available
   const formattedDate = story.partnershipDate
     ? new Date(story.partnershipDate).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-      })
+      year: "numeric",
+      month: "long",
+    })
     : null
 
   // Parse markdown to HTML for rich text fields
@@ -81,12 +87,12 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
             {/* Partner Logo */}
             {logoUrl && logoUrl !== "/placeholder.svg" && (
               <div className="mb-6 h-16 flex items-center">
-                <Image 
-                  src={logoUrl} 
-                  alt={story.partnerName} 
-                  width={200} 
-                  height={64} 
-                  className="object-contain" 
+                <Image
+                  src={logoUrl}
+                  alt={story.partnerName}
+                  width={200}
+                  height={64}
+                  className="object-contain"
                 />
               </div>
             )}
@@ -126,33 +132,99 @@ export default async function PartnerStoryDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Content Section */}
-      <section className="py-20 bg-background">
+      {/* Main Content */}
+      <section className="py-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-16">
-            {/* Challenge */}
+            {/* Challenge Section */}
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-6">The Challenge</h2>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-accent/10 text-accent rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold text-foreground">The Challenge</h2>
+              </div>
               <div
-                className="prose prose-lg max-w-none text-muted-foreground [&_strong]:font-bold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2"
+                className="prose prose-lg max-w-none text-muted-foreground leading-relaxed
+                  prose-headings:text-foreground prose-headings:font-bold
+                  prose-p:text-muted-foreground prose-p:leading-relaxed
+                  prose-strong:text-foreground prose-strong:font-semibold
+                  prose-ul:text-muted-foreground prose-ol:text-muted-foreground
+                  prose-li:text-muted-foreground"
                 dangerouslySetInnerHTML={{ __html: challengeHtml }}
               />
             </div>
 
-            {/* Collaboration */}
-            <div className="bg-gradient-to-br from-secondary/50 to-secondary/30 rounded-2xl p-8 md:p-12">
-              <h2 className="text-3xl font-bold text-foreground mb-6">Our Collaboration</h2>
+            {/* Collaboration Section */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-accent/10 text-accent rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold text-foreground">Our Collaboration</h2>
+              </div>
               <div
-                className="prose prose-lg max-w-none text-muted-foreground [&_strong]:font-bold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2"
+                className="prose prose-lg max-w-none text-muted-foreground leading-relaxed
+                  prose-headings:text-foreground prose-headings:font-bold
+                  prose-p:text-muted-foreground prose-p:leading-relaxed
+                  prose-strong:text-foreground prose-strong:font-semibold
+                  prose-ul:text-muted-foreground prose-ol:text-muted-foreground
+                  prose-li:text-muted-foreground"
                 dangerouslySetInnerHTML={{ __html: collaborationHtml }}
               />
             </div>
 
-            {/* Impact */}
+            {/* Impact Section */}
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-6">The Impact</h2>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-accent/10 text-accent rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold text-foreground">The Impact</h2>
+              </div>
               <div
-                className="prose prose-lg max-w-none text-muted-foreground [&_strong]:font-bold [&_strong]:text-foreground [&_em]:italic [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mb-2"
+                className="prose prose-lg max-w-none text-muted-foreground leading-relaxed
+                  prose-headings:text-foreground prose-headings:font-bold
+                  prose-p:text-muted-foreground prose-p:leading-relaxed
+                  prose-strong:text-foreground prose-strong:font-semibold
+                  prose-ul:text-muted-foreground prose-ol:text-muted-foreground
+                  prose-li:text-muted-foreground"
                 dangerouslySetInnerHTML={{ __html: impactHtml }}
               />
             </div>
